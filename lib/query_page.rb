@@ -29,11 +29,16 @@ module QueryPage
 
   module App
     class Controller
+      QUERY = %r{\A/queries/([a-z0-9_\-]+)\z}i
+
       def call(env)
         request = Rack::Request.new(env)
 
         if request.get? && request.path == '/queries'
           json(queries: QueryCache.instance.cache.map(&:name))
+        elsif request.get? && request.path.match(QUERY)
+          query = QueryCache.instance.cache.detect { |query| query.name == $1 }
+          query ? json(result: query.new.run) : not_found
         else
           not_found
         end
