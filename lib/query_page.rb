@@ -14,7 +14,7 @@ module QueryPage
     end
 
     def <<(query)
-      cache << query
+      @cache = (cache << query).sort_by(&:name)
     end
 
     def opts_for(name, opt)
