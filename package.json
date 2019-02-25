@@ -1,0 +1,36 @@
+{
+  "name": "query_page",
+  "version": "0.1.0",
+  "description": "The frontend component of the query page gem",
+  "main": "src/app.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CultureHQ/query_page.git"
+  },
+  "author": "Kevin Deisz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CultureHQ/query_page/issues"
+  },
+  "homepage": "https://github.com/CultureHQ/query_page#readme",
+  "dependencies": {
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "node-sass": "^4.11.0",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.13"
+  }
+}
