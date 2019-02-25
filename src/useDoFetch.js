@@ -1,38 +1,33 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import doFetch from "./doFetch";
 
-const useFetch = path => {
-  let cancelled = false;
+const useDoFetch = (ref, path) => {
   const [state, setState] = useState({
     error: null,
     fetching: true,
     json: {}
   });
 
-  useEffect(
+  const onFetch = useCallback(
     () => {
       setState({ error: null, fetching: true, json: {} });
 
       doFetch(path)
         .then(json => {
-          if (!cancelled) {
+          if (ref.current) {
             setState({ fetching: false, json });
           }
         })
         .catch(error => {
-          if (!cancelled) {
+          if (ref.current) {
             setState({ fetching: false, error });
           }
         });
-
-      return () => {
-        cancelled = true;
-      };
     },
-    [path]
+    [ref, path]
   );
 
-  return state;
+  return [state, onFetch];
 };
 
-export default useFetch;
+export default useDoFetch;

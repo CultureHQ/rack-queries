@@ -13,8 +13,8 @@ module QueryPage
       @cache = []
     end
 
-    def <<(query)
-      @cache = (cache << query).sort_by(&:name)
+    def add(*queries)
+      @cache = (cache + queries).sort_by(&:name)
     end
 
     def opts_for(name, opt)
@@ -39,14 +39,12 @@ module QueryPage
       end
 
       extend Forwardable
-      def_delegators :instance, :opts_for, :queries, :query_for
+      def_delegators :instance, :add, :opts_for, :queries, :query_for
     end
   end
 
-  class Query
-    def self.inherited(query)
-      QueryCache.instance << query
-    end
+  def self.add(*queries)
+    QueryCache.add(*queries)
   end
 
   module App

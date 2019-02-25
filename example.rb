@@ -62,13 +62,13 @@ class Database
 end
 
 module Queries
-  class OrgCountQuery < QueryPage::Query
+  class OrgCountQuery
     def run(opts)
       Database.value_from('SELECT COUNT(*) FROM orgs')
     end
   end
 
-  class OrgUsersCountQuery < QueryPage::Query
+  class OrgUsersCountQuery
     def org_name
       Database.values_from('SELECT name FROM orgs')
     end
@@ -83,7 +83,7 @@ module Queries
     end
   end
 
-  class OrgActiveUsersCountQuery < QueryPage::Query
+  class OrgActiveUsersCountQuery
     def org_name
       Database.values_from('SELECT name FROM orgs')
     end
@@ -99,12 +99,19 @@ module Queries
     end
   end
 
-  class UserCountQuery < QueryPage::Query
+  class UserCountQuery
     def run(opts)
       Database.value_from('SELECT COUNT(*) FROM users')
     end
   end
 end
+
+QueryPage.add(
+  Queries::OrgCountQuery,
+  Queries::OrgUsersCountQuery,
+  Queries::OrgActiveUsersCountQuery,
+  Queries::UserCountQuery
+)
 
 Rack::Server.start(app: QueryPage::App, server: 'webrick')
 
