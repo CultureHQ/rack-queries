@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
   output: {
     path: path.resolve(__dirname, "lib/query_page/static"),
-    filename: "index.js"
+    filename: "app.js"
   },
   entry: path.join(__dirname, "src", "app.js"),
   module: {
