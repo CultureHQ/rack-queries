@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
 
 import QueryOpts from "./QueryOpts";
-import useFetch from "./useFetch";
-import useDoFetch from "./useDoFetch";
+import useFetch from "./utils/useFetch";
+import useDoFetch from "./utils/useDoFetch";
 
 const makeQueryURL = (query, values) => {
   const url = `/queries/${query.name}`;

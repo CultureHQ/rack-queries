@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import useFetch from "./useFetch";
+import useFetch from "./utils/useFetch";
 
 const QueryOpt = ({ query, opt, value, onValueChange }) => {
   const { error, fetching, json } = useFetch(`/queries/${query.name}/opts/${opt}`);
