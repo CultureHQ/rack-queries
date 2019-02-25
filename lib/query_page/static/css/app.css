@@ -1,0 +1,46 @@
+html,
+body {
+  background-color: #eee;
+  font-family: Verdana, Geneva, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  margin: 2em auto;
+  width: 60%;
+}
+
+.query {
+  appearance: none;
+  background-color: #fff;
+  border: #aaa solid 1px;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 1em;
+  text-align: left;
+  width: 100%;
+}
+
+.query:hover {
+  background-color: #eee;
+}
+
+.query + .query {
+  margin-top: -1px;
+}
+
+.query:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.query:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}

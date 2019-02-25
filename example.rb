@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
+require 'forwardable'
 require 'rack'
 require 'sqlite3'
 
@@ -8,6 +9,12 @@ $:.unshift(File.expand_path(File.join('lib'), __dir__))
 require 'query_page'
 
 class Database
+  class IncomprehensibleReturnValueError < ArgumentError
+    def initialize(*)
+      super('SQLite3 return value not understood')
+    end
+  end
+
   attr_reader :db
 
   def initialize
@@ -18,32 +25,84 @@ class Database
     end
   end
 
-  def value_from(query)
-    db.execute(query)[0][0]
+  def value_from(query, binds = [])
+    results = execute(query, binds)
+
+    case results
+    when Array
+      results[0][0]
+    when SQLite3::ResultSet
+      results.next[0]
+    else
+      raise IncomprehensibleReturnValueError
+    end
+  end
+
+  def values_from(query, binds = [])
+    execute(query, binds).map(&:first)
   end
 
   class << self
-    def value_from(query)
-      instance.value_from(query)
-    end
-
-    private
-
     def instance
       @instance ||= new
     end
+
+    extend Forwardable
+    def_delegators :instance, :value_from, :values_from
+  end
+
+  private
+
+  def execute(query, binds)
+    return db.execute(query) if binds.empty?
+
+    stmt = db.prepare(query)
+    stmt.execute(binds)
   end
 end
 
-class OrgCountQuery < QueryPage::Query
-  def run
-    Database.value_from('SELECT COUNT(*) FROM orgs')
+module Queries
+  class OrgCountQuery < QueryPage::Query
+    def run(opts)
+      Database.value_from('SELECT COUNT(*) FROM orgs')
+    end
   end
-end
 
-class UserCountQuery < QueryPage::Query
-  def run
-    Database.value_from('SELECT COUNT(*) FROM users')
+  class OrgUsersCountQuery < QueryPage::Query
+    def org_name
+      Database.values_from('SELECT name FROM orgs')
+    end
+
+    def run(opts)
+      query = <<~SQL
+        SELECT COUNT(*) FROM users
+        WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
+      SQL
+
+      Database.value_from(query, opts)
+    end
+  end
+
+  class OrgActiveUsersCountQuery < QueryPage::Query
+    def org_name
+      Database.values_from('SELECT name FROM orgs')
+    end
+
+    def run(opts)
+      query = <<~SQL
+        SELECT COUNT(*) FROM users
+        WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
+        AND active = 1
+      SQL
+
+      Database.value_from(query, opts)
+    end
+  end
+
+  class UserCountQuery < QueryPage::Query
+    def run(opts)
+      Database.value_from('SELECT COUNT(*) FROM users')
+    end
   end
 end
 
@@ -83,7 +142,7 @@ INSERT INTO users(org_id, active, name) VALUES
   (2, 1, "Dwight Schrute"),
   (2, 1, "Angela Martin"),
   (2, 1, "Andy Bernard"),
-  (2, 1, "Kelly Kapoor"),
   (2, 1, "Kevin Malone"),
-  (2, 1, "Ryan Howard"),
-  (2, 0, "Roy Anderson");
+  (2, 0, "Roy Anderson"),
+  (2, 1, "Kelly Kapoor"),
+  (2, 1, "Ryan Howard");

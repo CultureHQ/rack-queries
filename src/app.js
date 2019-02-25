@@ -5,7 +5,7 @@ import QueryList from "./QueryList";
 
 const App = () => (
   <StrictMode>
-    <h1>QueryPage</h1>
+    <h1>Queries</h1>
     <QueryList />
   </StrictMode>
 );
