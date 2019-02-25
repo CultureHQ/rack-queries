@@ -12,19 +12,10 @@ body {
 }
 
 .query {
-  appearance: none;
   background-color: #fff;
   border: #aaa solid 1px;
-  color: inherit;
   cursor: pointer;
-  display: block;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  margin: 0;
   padding: 1em;
-  text-align: left;
-  width: 100%;
 }
 
 .query:hover {
