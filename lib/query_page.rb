@@ -5,7 +5,7 @@ require 'query_page/version'
 
 module QueryPage
   module App
-    class NotFound
+    class QueriesController
       def call(env)
         [404, { 'Content-Type' => 'text/plain' }, ['Not Found']]
       end
@@ -23,8 +23,8 @@ module QueryPage
       def app
         @app ||=
           Rack::Builder.new do
-            use Rack::Static, urls: %w[/js], root: STATIC, index: 'index.html'
-            run NotFound.new
+            use Rack::Static, urls: [''], root: STATIC, index: 'index.html'
+            run QueriesController.new
           end
       end
     end
