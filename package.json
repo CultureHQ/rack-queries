@@ -4,7 +4,7 @@
   "description": "The frontend component of the query page gem",
   "main": "src/app.js",
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode development"
   },
   "repository": {
     "type": "git",
