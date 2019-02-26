@@ -25,7 +25,9 @@ const QueryResults = ({ error, fetching, json }) => {
   return <>{json.results}</>;
 };
 
-const QueryDetails = ({ query, queryRef }) => {
+const QueryDetails = ({ query }) => {
+  const queryRef = useRef(null);
+
   const [values, setValues] = useState(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
@@ -38,7 +40,7 @@ const QueryDetails = ({ query, queryRef }) => {
   const [runState, onRun] = useDoFetch(queryRef, makeQueryURL(query, values));
 
   return (
-    <>
+    <div ref={queryRef}>
       <QueryOpts query={query} values={values} onValueChange={onValueChange} />
       <button
         type="button"
@@ -48,7 +50,7 @@ const QueryDetails = ({ query, queryRef }) => {
         Run
       </button>
       <QueryResults {...runState} />
-    </>
+    </div>
   );
 };
 

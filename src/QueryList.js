@@ -1,38 +1,22 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import QueryDetails from "./QueryDetails";
 import useFetch from "./utils/useFetch";
 
-const Query = ({ query }) => {
-  const queryRef = useRef(null);
-  const [expanded, setExpanded] = useState(false);
-
-  const onToggle = useCallback(
-    event => {
-      if (queryRef.current === event.target) {
-        setExpanded(value => !value);
-      }
-    },
-    [setExpanded, queryRef]
-  );
+const Query = ({ active, query, onQueryClick }) => {
+  const onClick = useCallback(() => onQueryClick(query), [query, onQueryClick]);
+  const className = active ? "query query-active" : "query";
 
   return (
-    <div
-      className="query"
-      onClick={onToggle}
-      ref={queryRef}
-      tabIndex={0}
-      role="button"
-      aria-pressed={expanded}
-    >
+    <button className={className} type="button" onClick={onClick}>
       {query.name}
-      {expanded && <QueryDetails query={query} queryRef={queryRef} />}
-    </div>
+    </button>
   );
 };
 
 const QueryList = () => {
   const { error, fetching, json } = useFetch("/queries");
+  const [activeQuery, setActiveQuery] = useState(null);
 
   if (error) {
     return "error";
@@ -44,12 +28,19 @@ const QueryList = () => {
 
   return (
     <main>
-      <div className="results">
-
+      <div className="active">
+        {activeQuery && (
+          <QueryDetails query={activeQuery} />
+        )}
       </div>
       <nav>
         {json.queries.map(query => (
-          <Query key={query.name} query={query} />
+          <Query
+            key={query.name}
+            active={query === activeQuery}
+            query={query}
+            onQueryClick={setActiveQuery}
+          />
         ))}
       </nav>
     </main>

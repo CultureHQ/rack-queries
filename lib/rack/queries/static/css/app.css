@@ -1,6 +1,5 @@
 html,
 body {
-  background-color: #eee;
   font-family: Verdana, Geneva, sans-serif;
   margin: 0;
   padding: 0;
@@ -17,10 +16,10 @@ nav {
 h1 {
   background-color: #fafafa;
   box-shadow: 0 0 1px rgba(0, 0, 0, .75);
-  font-size: 1.3em;
+  font-size: 1.3rem;
   font-weight: normal;
   margin: 0;
-  padding: .5em;
+  padding: .75rem 1rem;
   position: fixed;
   width: 100%;
 }
@@ -29,7 +28,9 @@ main {
   display: flex;
 }
 
-.results {
+.active {
+  background-color: #ddd;
+  padding: calc(3.8rem + 5px) 1rem 1rem;
   flex-basis: 75%;
 }
 
@@ -38,15 +39,44 @@ nav {
   border-left: #aaa solid 1px;
   box-sizing: border-box;
   flex-basis: 25%;
-  padding-top: calc(2.3em + 9px);
+  padding-top: calc(2.8rem + 5px);
 }
 
 .query {
+  appearance: none;
+  background: inherit;
+  border: 0;
   border-bottom: #ddd solid 1px;
   cursor: pointer;
-  padding: 1em;
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 1rem;
+  position: relative;
+  text-align: left;
+  width: 100%;
 }
 
 .query:hover {
   background-color: #eee;
+}
+
+.query-active {
+  background-color: #8b3333;
+  color: #fff;
+}
+
+.query-active:before {
+  border-bottom: 12px solid transparent;
+  border-right: 12px solid #8b3333;
+  border-top: 12px solid transparent;
+  content: ' ';
+  left: -12px;
+  position: absolute;
+}
+
+.query-active:hover {
+  background-color: #8b3333;
 }
