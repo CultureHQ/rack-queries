@@ -80,3 +80,21 @@ nav {
 .query-active:hover {
   background-color: #8b3333;
 }
+
+.run {
+  border: 0;
+  border-radius: 4px;
+  background: #8b3333;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: .5rem 1rem;
+}
+
+.run:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}

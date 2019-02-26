@@ -43,6 +43,7 @@ const QueryDetails = ({ query }) => {
     <div ref={queryRef}>
       <QueryOpts query={query} values={values} onValueChange={onValueChange} />
       <button
+        className="run"
         type="button"
         disabled={Object.keys(values).some(key => !values[key])}
         onClick={onRun}
