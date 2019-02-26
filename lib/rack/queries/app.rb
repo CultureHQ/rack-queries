@@ -9,15 +9,17 @@ module Rack
         # then we can do something smart about it, but for now it's fine.
         # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength
         def call(env)
-          request = Request.new(env)
-          return not_found unless request.get?
+          return not_found unless env[REQUEST_METHOD]
 
-          case request.path
+          case env[SCRIPT_NAME]
           when '/queries'
             json(queries: Cache.queries)
           when %r{\A/queries/([a-z0-9_\-:]+)\z}i
             query = Cache.query_for($1)
-            query ? json(results: query.new.run(request.params)) : not_found
+            return not_found unless query
+
+            params = Request.new(env).params
+            json(results: query.new.run(params))
           when %r{\A/queries/([a-z0-9_\-:]+)/opts/([a-z0-9_]+)\z}i
             values = Cache.opts_for($1, $2)
             values ? json(values: values) : not_found
