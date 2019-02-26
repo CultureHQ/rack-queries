@@ -5,7 +5,7 @@ require 'forwardable'
 require 'rack'
 require 'sqlite3'
 
-$:.unshift(File.expand_path(File.join('lib', 'rack'), __dir__))
+$:.unshift(File.expand_path(File.join('..', 'lib', 'rack'), __dir__))
 require 'queries'
 
 class Database
