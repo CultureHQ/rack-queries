@@ -43,11 +43,16 @@ const QueryList = () => {
   }
 
   return (
-    <div>
-      {json.queries.map(query => (
-        <Query key={query.name} query={query} />
-      ))}
-    </div>
+    <main>
+      <div className="results">
+
+      </div>
+      <nav>
+        {json.queries.map(query => (
+          <Query key={query.name} query={query} />
+        ))}
+      </nav>
+    </main>
   );
 };
 

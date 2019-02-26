@@ -5,7 +5,7 @@ import QueryList from "./QueryList";
 
 const App = () => (
   <StrictMode>
-    <h1>Queries</h1>
+    <h1>Rack::Queries</h1>
     <QueryList />
   </StrictMode>
 );
