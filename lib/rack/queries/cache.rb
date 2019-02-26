@@ -15,7 +15,10 @@ module Rack
 
       def opts_for(name, opt)
         query = query_for(name)
-        query.new.public_send(opt) if query
+        return unless query
+
+        instance = query.new
+        instance.public_send(opt) if instance.respond_to?(opt)
       end
 
       def queries
