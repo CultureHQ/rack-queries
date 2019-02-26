@@ -61,6 +61,14 @@ module Rack
       end
 
       class << self
+        def middlewares
+          @middlewares ||= []
+        end
+
+        def use(*args, &block)
+          middlewares << [args, block]
+        end
+
         def call(env)
           app.call(env)
         end
@@ -69,9 +77,16 @@ module Rack
 
         def app
           @app ||=
-            Builder.new do
-              use Static
-              run Controller.new
+            begin
+              configurations = middlewares
+
+              Builder.new do
+                use Static
+                configurations.each do |middleware, block|
+                  use(*middleware, &block)
+                end
+                run Controller.new
+              end
             end
         end
       end
