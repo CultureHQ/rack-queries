@@ -19,6 +19,7 @@ const QueryResults = ({ error, fetching, results }) => {
 
   const [headerRow, ...bodyRows] = results;
 
+  /* eslint-disable react/no-array-index-key */
   return (
     <div className="results">
       Results:
@@ -33,10 +34,10 @@ const QueryResults = ({ error, fetching, results }) => {
           </tr>
         </thead>
         <tbody>
-          {bodyRows.map((bodyRow, index) => (
-            <tr key={index}>
-              {bodyRow.map((value, index) => (
-                <td key={index}>
+          {bodyRows.map((bodyRow, rowIndex) => (
+            <tr key={rowIndex}>
+              {bodyRow.map((value, cellIndex) => (
+                <td key={cellIndex}>
                   {value}
                 </td>
               ))}

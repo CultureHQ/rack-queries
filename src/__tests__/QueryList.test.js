@@ -1,19 +1,8 @@
 import React from "react";
 import { act, fireEvent, render, waitForElement } from "react-testing-library";
 
+import makeXHRMock from "./makeXHRMock";
 import QueryList from "../QueryList";
-
-const makeXHRMock = response => {
-  const xhr = {
-    open: jest.fn(),
-    send: () => xhr.onreadystatechange(),
-    status: 200,
-    readyState: 4,
-    responseText: JSON.stringify(response)
-  };
-
-  return xhr;
-};
 
 window.XMLHttpRequest = jest.fn();
 
@@ -23,7 +12,7 @@ test("renders the list of queries", async () => {
     { name: "Queries::UserCountQuery", opts: [] }
   ];
 
-  window.XMLHttpRequest.mockImplementation(() => makeXHRMock({ queries }));
+  window.XMLHttpRequest.mockImplementation(() => makeXHRMock(() => ({ queries })));
 
   let getByText;
   let queryByText;

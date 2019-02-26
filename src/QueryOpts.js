@@ -23,12 +23,14 @@ const QueryOpt = ({ query, opt, value, onValueChange }) => {
 
   const name = `${query.name}-${opt}`;
 
+  /* eslint-disable jsx-a11y/label-has-for */
+  // because of https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/477
   return (
     <label className="opt" htmlFor={name}>
       {`${opt}: `}
       <select id={name} name={name} onChange={onChange}>
-        {json.values.map(value => (
-          <option key={value} value={value}>{value}</option>
+        {json.values.map(optValue => (
+          <option key={optValue} value={optValue}>{optValue}</option>
         ))}
       </select>
     </label>
