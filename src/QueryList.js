@@ -30,7 +30,7 @@ const QueryList = () => {
     <main>
       <div className="active">
         {activeQuery && (
-          <QueryDetails query={activeQuery} />
+          <QueryDetails key={activeQuery.name} query={activeQuery} />
         )}
       </div>
       <nav>

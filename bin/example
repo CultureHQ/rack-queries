@@ -42,13 +42,17 @@ class Database
     execute(query, binds).map(&:first)
   end
 
+  def rows_from(query, binds = [])
+    execute(query, binds)
+  end
+
   class << self
     def instance
       @instance ||= new
     end
 
     extend Forwardable
-    def_delegators :instance, :value_from, :values_from
+    def_delegators :instance, :value_from, :values_from, :rows_from
   end
 
   private
@@ -104,13 +108,21 @@ module Queries
       Database.value_from('SELECT COUNT(*) FROM users')
     end
   end
+
+  class UsersQuery
+    def run(opts)
+      [%w[id org_id active name]] +
+        Database.rows_from('SELECT id, org_id, active, name FROM users')
+    end
+  end
 end
 
 Rack::Queries.add(
   Queries::OrgCountQuery,
   Queries::OrgUsersCountQuery,
   Queries::OrgActiveUsersCountQuery,
-  Queries::UserCountQuery
+  Queries::UserCountQuery,
+  Queries::UsersQuery
 )
 
 Rack::Server.start(app: Rack::Queries::App, server: 'webrick')

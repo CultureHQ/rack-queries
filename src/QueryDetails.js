@@ -26,25 +26,25 @@ const QueryDetails = ({ query }) => {
   );
 
   const [runState, setRunState] = useState({
-    error: null, fetching: false, json: {}
+    error: null, fetching: false, results: null
   });
 
   const onValueChange = useCallback(
     (opt, value) => {
       setValues(current => ({ ...current, [opt]: value }));
-      setRunState({ error: null, fetching: false, json: {} });
+      setRunState({ error: null, fetching: false, results: null });
     },
     [setValues, setRunState]
   );
 
   const onRun = useCallback(
     () => {
-      setRunState({ error: null, fetching: true, json: {} });
+      setRunState({ error: null, fetching: true, results: null });
 
       doFetch(makeQueryURL(query, values))
-        .then(json => {
+        .then(({ results }) => {
           if (detailsRef.current) {
-            setRunState({ fetching: false, json });
+            setRunState({ fetching: false, results });
           }
         })
         .catch(error => {

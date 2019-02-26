@@ -114,3 +114,24 @@ nav {
 .results {
   margin: 1rem 0;
 }
+
+table {
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+}
+
+th {
+  padding: 8px;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+td {
+  border-top: 1px solid #aaa;
+  padding: 8px;
+  vertical-align: top;
+}
