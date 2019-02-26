@@ -11,7 +11,7 @@ module Rack
         def call(env)
           return not_found unless env[REQUEST_METHOD]
 
-          case env[SCRIPT_NAME]
+          case env[PATH_INFO]
           when '/queries'
             json(queries: Cache.queries)
           when %r{\A/queries/([a-z0-9_\-:]+)\z}i

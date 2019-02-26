@@ -14,14 +14,14 @@ const QueryResults = ({ error, fetching, results }) => {
   }
 
   if (!Array.isArray(results)) {
-    return <div className="results">Result: {results}</div>;
+    return `Result: ${results}`;
   }
 
   const [headerRow, ...bodyRows] = results;
 
   /* eslint-disable react/no-array-index-key */
   return (
-    <div className="results">
+    <>
       Results:
       <table>
         <thead>
@@ -45,7 +45,7 @@ const QueryResults = ({ error, fetching, results }) => {
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 
