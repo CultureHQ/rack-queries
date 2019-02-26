@@ -5,7 +5,7 @@ import QueryResults from "./QueryResults";
 import doFetch from "./utils/doFetch";
 
 const makeQueryURL = (query, values) => {
-  const url = `/queries/${query.name}`;
+  const url = `queries/${query.name}`;
 
   if (Object.keys(values).length === 0) {
     return url;

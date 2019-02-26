@@ -15,7 +15,7 @@ const Query = ({ active, query, onQueryClick }) => {
 };
 
 const QueryList = () => {
-  const { error, fetching, json } = useFetch("/queries");
+  const { error, fetching, json } = useFetch("queries");
   const [activeQuery, setActiveQuery] = useState(null);
 
   if (error) {
