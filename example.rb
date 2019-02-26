@@ -5,8 +5,8 @@ require 'forwardable'
 require 'rack'
 require 'sqlite3'
 
-$:.unshift(File.expand_path(File.join('lib'), __dir__))
-require 'query_page'
+$:.unshift(File.expand_path(File.join('lib', 'rack'), __dir__))
+require 'queries'
 
 class Database
   class IncomprehensibleReturnValueError < ArgumentError
@@ -106,14 +106,14 @@ module Queries
   end
 end
 
-QueryPage.add(
+Rack::Queries.add(
   Queries::OrgCountQuery,
   Queries::OrgUsersCountQuery,
   Queries::OrgActiveUsersCountQuery,
   Queries::UserCountQuery
 )
 
-Rack::Server.start(app: QueryPage::App, server: 'webrick')
+Rack::Server.start(app: Rack::Queries::App, server: 'webrick')
 
 __END__
 CREATE TABLE orgs (

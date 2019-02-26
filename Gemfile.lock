@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    query_page (0.1.0)
+    rack-queries (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -17,8 +17,8 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 2.0)
   minitest (~> 5.0)
-  query_page!
   rack (~> 2.0)
+  rack-queries!
   rake (~> 12.0)
   sqlite3 (~> 1.4)
 

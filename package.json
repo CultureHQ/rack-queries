@@ -1,21 +1,21 @@
 {
-  "name": "query_page",
+  "name": "rack-queries",
   "version": "0.1.0",
-  "description": "The frontend component of the query page gem",
+  "description": "The frontend component of the rack queries page",
   "main": "src/app.js",
   "scripts": {
     "build": "webpack --mode development"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CultureHQ/query_page.git"
+    "url": "git+https://github.com/CultureHQ/rack-queries.git"
   },
   "author": "Kevin Deisz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CultureHQ/query_page/issues"
+    "url": "https://github.com/CultureHQ/rack-queries/issues"
   },
-  "homepage": "https://github.com/CultureHQ/query_page#readme",
+  "homepage": "https://github.com/CultureHQ/rack-queries#readme",
   "dependencies": {
     "react": "^16.8.3",
     "react-dom": "^16.8.3"

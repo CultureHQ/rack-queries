@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path(File.join('lib', 'rack'), __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'query_page/version'
+require 'queries/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'query_page'
-  spec.version       = QueryPage::VERSION
+  spec.name          = 'rack-queries'
+  spec.version       = Rack::Queries::VERSION
   spec.authors       = ['Kevin Deisz']
   spec.email         = ['kevin.deisz@gmail.com']
 
   spec.summary       = 'A page in your app for pre-built queries'
-  spec.homepage      = 'https://github.com/CultureHQ/query_page'
+  spec.homepage      = 'https://github.com/CultureHQ/rack-queries'
   spec.license       = 'MIT'
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
