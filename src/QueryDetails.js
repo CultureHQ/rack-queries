@@ -1,7 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
 
 import QueryOpts from "./QueryOpts";
-import useDoFetch from "./utils/useDoFetch";
+import QueryResults from "./QueryResults";
+import doFetch from "./utils/doFetch";
 
 const makeQueryURL = (query, values) => {
   const url = `/queries/${query.name}`;
@@ -17,31 +18,51 @@ const makeQueryURL = (query, values) => {
   return `${url}?${pairs.join("&")}`;
 };
 
-const QueryResults = ({ error, fetching, json }) => {
-  if (!error && !fetching && Object.keys(json).length === 0) {
-    return null;
-  }
-
-  return <>{json.results}</>;
-};
-
 const QueryDetails = ({ query }) => {
-  const queryRef = useRef(null);
+  const detailsRef = useRef(null);
 
   const [values, setValues] = useState(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
 
+  const [runState, setRunState] = useState({
+    error: null, fetching: false, json: {}
+  });
+
   const onValueChange = useCallback(
-    (opt, value) => setValues(current => ({ ...current, [opt]: value })),
-    [setValues]
+    (opt, value) => {
+      setValues(current => ({ ...current, [opt]: value }));
+      setRunState({ error: null, fetching: false, json: {} });
+    },
+    [setValues, setRunState]
   );
 
-  const [runState, onRun] = useDoFetch(queryRef, makeQueryURL(query, values));
+  const onRun = useCallback(
+    () => {
+      setRunState({ error: null, fetching: true, json: {} });
+
+      doFetch(makeQueryURL(query, values))
+        .then(json => {
+          if (detailsRef.current) {
+            setRunState({ fetching: false, json });
+          }
+        })
+        .catch(error => {
+          if (detailsRef.current) {
+            setRunState({ fetching: false, error });
+          }
+        });
+    },
+    [detailsRef, query, values, setRunState]
+  );
 
   return (
-    <div ref={queryRef}>
-      <QueryOpts query={query} values={values} onValueChange={onValueChange} />
+    <div ref={detailsRef}>
+      <QueryOpts
+        query={query}
+        values={values}
+        onValueChange={onValueChange}
+      />
       <button
         className="run"
         type="button"

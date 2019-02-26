@@ -57,6 +57,7 @@ nav {
   position: relative;
   text-align: left;
   width: 100%;
+  word-break: break-all;
 }
 
 .query:hover {
@@ -81,6 +82,17 @@ nav {
   background-color: #8b3333;
 }
 
+.opt {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.opt select {
+  font-size: 1rem;
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
 .run {
   border: 0;
   border-radius: 4px;
@@ -97,4 +109,8 @@ nav {
 .run:disabled {
   cursor: not-allowed;
   opacity: .5;
+}
+
+.results {
+  margin: 1rem 0;
 }

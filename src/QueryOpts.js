@@ -24,7 +24,7 @@ const QueryOpt = ({ query, opt, value, onValueChange }) => {
   const name = `${query.name}-${opt}`;
 
   return (
-    <label htmlFor={name}>
+    <label className="opt" htmlFor={name}>
       {`${opt}: `}
       <select id={name} name={name} onChange={onChange}>
         {json.values.map(value => (
