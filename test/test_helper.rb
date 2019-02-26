@@ -1,4 +1,6 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "query_page"
+# frozen_string_literal: true
 
-require "minitest/autorun"
+$LOAD_PATH.unshift File.expand_path(File.join('..', 'lib', 'rack'), __dir__)
+require 'queries'
+
+require 'minitest/autorun'
