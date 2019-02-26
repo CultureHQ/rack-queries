@@ -4254,13 +4254,6 @@ react-dom@^16.8.3:
     prop-types "^15.6.2"
     scheduler "^0.13.3"
 
-react-hooks-testing-library@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/react-hooks-testing-library/-/react-hooks-testing-library-0.3.4.tgz#b7408f966c6b3fbdc7e975ff655786069e8b972e"
-  integrity sha512-A4dhnedN7DtWWiRyOG/C3Sg9aN+rScKN6DWsFIUCA2Z5m23lC5xQ4X5NKSTt3wlXcmfvXUMQoEVLwKckI4jd7Q==
-  dependencies:
-    react-testing-library "^6.0.0"
-
 react-is@^16.8.1:
   version "16.8.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.3.tgz#4ad8b029c2a718fc0cfc746c8d4e1b7221e5387d"

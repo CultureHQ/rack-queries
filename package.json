@@ -5,7 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "build": "webpack --mode development",
-    "build:prod": "webpack --mode production"
+    "build:prod": "webpack --mode production",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,8 +29,13 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
     "jest": "^24.1.0",
-    "react-hooks-testing-library": "^0.3.4",
+    "react-testing-library": "^6.0.0",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./setupTests.js"
+    ]
   }
 }
