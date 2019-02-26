@@ -7,7 +7,7 @@ This gem provides a page in your rack-based application that allows quick execut
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'query_page'
+gem 'rack-queries'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install query_page
+    $ gem install rack-queries
 
 ## Usage
 
