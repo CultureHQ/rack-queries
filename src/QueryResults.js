@@ -1,7 +1,7 @@
 import React from "react";
 
 const QueryResults = ({ error, fetching, results }) => {
-  if (!error && !fetching && !results) {
+  if (!error && !fetching && (results === null)) {
     return null;
   }
 
