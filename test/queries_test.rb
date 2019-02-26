@@ -18,7 +18,7 @@ module Queries
       'Dwight Schrute',
       'Angela Martin'
     ]
-  }
+  }.freeze
 
   class UserNamesQuery
     def org_name
@@ -42,6 +42,22 @@ end
 class QueriesTest < Minitest::Test
   include Rack::Test::Methods
 
+  STATIC_FILES = {
+    'index.html' => 'text/html',
+    'app.css' => 'text/css',
+    'app.js' => 'application/javascript',
+    'favicon.ico' => 'image/vnd.microsoft.icon'
+  }.freeze
+
+  def test_static
+    STATIC_FILES.each do |name, media_type|
+      get "/#{name}"
+
+      assert last_response.ok?
+      assert_equal media_type, last_response.media_type
+    end
+  end
+
   def test_version
     refute_nil Rack::Queries::VERSION
   end
@@ -51,22 +67,6 @@ class QueriesTest < Minitest::Test
 
     assert last_response.ok?
     assert_equal 'text/html', last_response.media_type
-  end
-
-  def test_static
-    static = {
-      'index.html' => 'text/html',
-      'app.css' => 'text/css',
-      'app.js' => 'application/javascript',
-      'favicon.ico' => 'image/vnd.microsoft.icon'
-    }
-
-    static.each do |name, media_type|
-      get "/#{name}"
-
-      assert last_response.ok?
-      assert_equal media_type, last_response.media_type
-    end
   end
 
   def test_queries

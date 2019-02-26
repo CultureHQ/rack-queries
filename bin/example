@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'forwardable'
 require 'rack'
 require 'sqlite3'
 
-$:.unshift(File.expand_path(File.join('..', 'lib', 'rack'), __dir__))
+$LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib', 'rack'), __dir__))
 require 'queries'
 
 class Database
@@ -67,7 +68,7 @@ end
 
 module Queries
   class OrgCountQuery
-    def run(opts)
+    def run(_opts)
       Database.value_from('SELECT COUNT(*) FROM orgs')
     end
   end
@@ -104,13 +105,13 @@ module Queries
   end
 
   class UserCountQuery
-    def run(opts)
+    def run(_opts)
       Database.value_from('SELECT COUNT(*) FROM users')
     end
   end
 
   class UsersQuery
-    def run(opts)
+    def run(_opts)
       [%w[id org_id active name]] +
         Database.rows_from('SELECT id, org_id, active, name FROM users')
     end

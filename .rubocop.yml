@@ -1,0 +1,13 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.6
+  Exclude:
+  - 'node_modules/**/*'
+  - 'vendor/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/PerlBackrefs:
+  Enabled: false

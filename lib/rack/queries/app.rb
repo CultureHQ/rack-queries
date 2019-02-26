@@ -4,6 +4,10 @@ module Rack
   module Queries
     module App
       class Controller
+        # Thought about refactoring this to split it out into multiple objects,
+        # but then thought better of it. If we end up adding more API endpoints
+        # then we can do something smart about it, but for now it's fine.
+        # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength
         def call(env)
           request = Request.new(env)
           return not_found unless request.get?
@@ -21,6 +25,7 @@ module Rack
             not_found
           end
         end
+        # rubocop:enable AbcSize, CyclomaticComplexity, MethodLength
 
         private
 
