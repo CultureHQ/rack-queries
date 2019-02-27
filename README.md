@@ -1,26 +1,75 @@
 # Rack::Queries
 
-This gem provides a page in your rack-based application that allows quick execution of pre-built queries. The goal is to allow quick insights into the state of your application without needing to update the main UI. Consider it a backdoor admin page that you can use before you decide to truly expose query results.
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'rack-queries'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rack-queries
+This gem provides a page in your rack-based (e.g., `Rails`, `Sinatra`) application that allows quick execution of pre-built queries. The goal is to allow quick insights into the state of your application without needing to update the main UI. Consider it a backdoor admin page that you can use before you decide to truly expose query results.
 
 ## Usage
 
+First, add `rack-queries` to your Gemfile and `bundle install`. Then, mount the `Rack::Queries::App` application within your app.
 
+Within Rails, that will look like (within `config/routes.rb`):
+
+```ruby
+Rails.application.routes.draw do
+  mount Rack::Queries::App, at: '/queries'
+end
+```
+
+Then, you can go to `/queries` within your application to view the empty queries page.
+
+Second, define the queries that you want included on your query page. Queries are classes that respond to `run(opts)`, as in:
+
+```ruby
+class UserCountQuery
+  def run(_opts)
+    User.count
+  end
+end
+```
+
+If you want your queries to have arguments (say for instance that users can be scoped to organizations), you define public instance methods on your query class:
+
+```ruby
+class UserPerOrgCountQuery
+  def org
+    Org.order(:name).pluck(:name)
+  end
+
+  def run(opts)
+    Org.where(name: opts['name']).users.count
+  end
+end
+```
+
+Each public instance method is expected to return an array of options (they get transformed into `select` tags in the UI). They are then given to the `run` method through the `opts` hash which contains the value within a string key corresponding to the method name.
+
+Finally, inform `rack-queries` that you want to include the query on your query page by adding it to the list:
+
+```ruby
+Rack::Queries.add(
+  UserCountQuery,
+  UserPerOrgCountQuery
+)
+```
+
+### Middleware
+
+Since `Rack::Queries` is a rack application, you can add whatever middleware you like into its stack before the request hits the application. For instance, to integrate HTTP basic auth around it to protect the query results, you can use the `Rack::Queries::App::use` method as in:
+
+```ruby
+Rack::Queries::App.use(Rack::Auth::Basic) do |username, password|
+  compare = lambda { |left, right|
+    ActiveSupport::SecurityUtils.secure_compare(
+      ::Digest::SHA256.hexdigest(left),
+      ::Digest::SHA256.hexdigest(right)
+    )
+  }
+
+  credentials = Rails.application.credentials
+
+  compare[username, credentials.rack_queries_username] &
+    compare[password, credentials.rack_queries_password]
+end
+```
 
 ## Development
 
