@@ -39,7 +39,7 @@ class UserPerOrgCountQuery
   end
 
   def run(opts)
-    Org.where(name: opts['name']).users.count
+    Org.where(name: opts['org']).users.count
   end
 end
 ```
