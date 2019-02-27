@@ -16,7 +16,7 @@ end
 
 Then, you can go to `/queries` within your application to view the empty queries page.
 
-Second, define the queries that you want included on your query page. Queries are classes that respond to `run(opts)`, as in:
+Second, define the queries that you want included on your query page. Queries are classes that respond to `run(opts)`. The `run` method should return either a single value or an array of arrays (in the UI it will either display one value or a table). The following example returns an overall count:
 
 ```ruby
 class UserCountQuery
