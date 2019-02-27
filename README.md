@@ -4,6 +4,8 @@
 
 This gem provides a page in your rack-based (e.g., `Rails`, `Sinatra`) application that allows quick execution of pre-built queries. The goal is to allow quick insights into the state of your application without needing to update the main UI. Consider it a backdoor admin page that you can use before you decide to truly expose query results.
 
+![Screenshot](docs/screenshot.png)
+
 ## Usage
 
 First, add `rack-queries` to your Gemfile and `bundle install`. Then, mount the `Rack::Queries::App` application within your app.
