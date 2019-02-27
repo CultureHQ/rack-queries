@@ -4,9 +4,9 @@ require 'forwardable'
 require 'json'
 require 'rack'
 
-require 'queries/app'
-require 'queries/cache'
-require 'queries/version'
+require 'rack/queries/app'
+require 'rack/queries/cache'
+require 'rack/queries/version'
 
 module Rack
   module Queries

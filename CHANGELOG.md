@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.1.1] - 2019-02-27
+### Changed
+- Changed the require paths for easier integration with bundler.
+
 ## [0.1.0] - 2019-02-27
 ### Added
 - Initial release 🎉

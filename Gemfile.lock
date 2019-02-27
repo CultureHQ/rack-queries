@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-queries (0.1.0)
+    rack-queries (0.1.1)
 
 GEM
   remote: https://rubygems.org/
