@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-lib = File.expand_path(File.join('lib', 'rack'), __dir__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'queries/version'
+require 'rack/queries/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'rack-queries'
