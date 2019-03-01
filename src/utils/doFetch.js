@@ -13,7 +13,7 @@ const doFetch = path => new Promise((resolve, reject) => {
     }
   };
 
-  xhr.open("GET", path);
+  xhr.open("GET", `${document.body.dataset.scriptName}/${path}`);
   xhr.send();
 });
 

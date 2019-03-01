@@ -55,8 +55,24 @@ module Rack
         end
 
         def call(env)
-          env[PATH_INFO] = '/index.html' if env[PATH_INFO] == '/'
-          (FILES.include?(env[PATH_INFO]) ? server : app).call(env)
+          if env[PATH_INFO] == '/'
+            render_index(env)
+          elsif FILES.include?(env[PATH_INFO])
+            server.call(env)
+          else
+            app.call(env)
+          end
+        end
+
+        private
+
+        def render_index(env)
+          content = ::File.read(::File.join(STATIC, 'index.html.erb'))
+          script_name = env[SCRIPT_NAME]
+
+          result = ERB.new(content).result_with_hash(script_name: script_name)
+
+          [200, { 'Content-Type' => 'text/html' }, [result]]
         end
       end
 
@@ -81,10 +97,10 @@ module Rack
               configurations = middlewares
 
               Builder.new do
-                use Static
                 configurations.each do |middleware, block|
                   use(*middleware, &block)
                 end
+                use Static
                 run Controller.new
               end
             end
