@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.1.3] - 2019-03-01
+### Changed
+- Move the middlewares before the static handler so that auth middlewares can handle the request before files like the index are returned.
+- More properly handle nesting the rack application under a script name such that you can visit `/queries` and not just `/queries/`.
+
 ## [0.1.2] - 2019-02-27
 ### Changed
 - Use relative paths for the static assets so that when the app is mounted it will be prefixed with the mounting path.
@@ -18,7 +23,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 - Initial release 🎉
 
-[Unreleased]: https://github.com/CultureHQ/rack-queries/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/CultureHQ/rack-queries/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/CultureHQ/rack-queries/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/CultureHQ/rack-queries/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/CultureHQ/rack-queries/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/CultureHQ/rack-queries/compare/f4f0b2...v0.1.0
