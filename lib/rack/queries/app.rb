@@ -92,18 +92,19 @@ module Rack
         private
 
         def app
-          @app ||=
-            begin
-              configurations = middlewares
+          @app ||= build_app
+        end
 
-              Builder.new do
-                configurations.each do |middleware, block|
-                  use(*middleware, &block)
-                end
-                use Static
-                run Controller.new
-              end
+        def build_app
+          configurations = middlewares
+
+          Builder.new do
+            configurations.each do |middleware, block|
+              use(*middleware, &block)
             end
+            use Static
+            run Controller.new
+          end
         end
       end
     end

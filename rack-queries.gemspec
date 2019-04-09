@@ -28,7 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rack', '~> 2.0'
   spec.add_development_dependency 'rack-test', '~> 1.1'
   spec.add_development_dependency 'rake', '~> 12.0'
-  spec.add_development_dependency 'rubocop', '~> 0.65'
+  spec.add_development_dependency 'rubocop', '~> 0.67'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.1'
   spec.add_development_dependency 'simplecov', '~> 0.16'
   spec.add_development_dependency 'sqlite3', '~> 1.4'
 end

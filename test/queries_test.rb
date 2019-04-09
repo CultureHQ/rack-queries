@@ -43,15 +43,15 @@ class QueriesTest < Minitest::Test
   include Rack::Test::Methods
 
   STATIC_FILES = {
-    'index.html' => 'text/html',
-    'app.css' => 'text/css',
-    'app.js' => 'application/javascript',
-    'favicon.ico' => 'image/vnd.microsoft.icon'
+    '/' => 'text/html',
+    '/app.css' => 'text/css',
+    '/app.js' => 'application/javascript',
+    '/favicon.ico' => 'image/vnd.microsoft.icon'
   }.freeze
 
   def test_static
     STATIC_FILES.each do |name, media_type|
-      get "/#{name}"
+      get name
 
       assert last_response.ok?
       assert_equal media_type, last_response.media_type
