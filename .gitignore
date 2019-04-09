@@ -1,4 +1,5 @@
 /.bundle/
+/.eslintcache
 /.yardoc
 /_yardoc/
 /yarn-error.log
