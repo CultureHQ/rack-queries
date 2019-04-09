@@ -2,6 +2,37 @@
 
 require 'test_helper'
 
+class Middleware
+  class Logger
+    attr_reader :lines
+
+    def initialize
+      @lines = []
+    end
+
+    def info(line)
+      lines << line
+    end
+
+    def self.instance
+      @instance ||= new
+    end
+  end
+
+  attr_reader :app, :logger
+
+  def initialize(app, logger)
+    @app = app
+    @logger = logger
+  end
+
+  def call(env)
+    app.call(env).tap { logger.info(env['PATH_INFO']) }
+  end
+
+  Rack::Queries::App.use(self, Logger.instance)
+end
+
 module Queries
   USERS = {
     'Parks and Recreation' => [
@@ -28,15 +59,17 @@ module Queries
     def run(opts)
       USERS[opts['org_name']]
     end
+
+    Rack::Queries.add(self)
   end
 
   class UserCountQuery
     def run(_opts)
       USERS.values.sum(&:size)
     end
-  end
 
-  Rack::Queries.add(UserNamesQuery, UserCountQuery)
+    Rack::Queries.add(self)
+  end
 end
 
 class QueriesTest < Minitest::Test
@@ -114,6 +147,13 @@ class QueriesTest < Minitest::Test
     get '/queries/Queries::UserNamesQuery/opts/foobar'
 
     assert last_response.not_found?
+  end
+
+  def test_middleware_gets_called
+    path = '/queries/Queries::UserCountQuery'
+    get path
+
+    assert_equal path, Middleware::Logger.instance.lines.last
   end
 
   private
