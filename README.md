@@ -55,6 +55,29 @@ Rack::Queries.add(
 )
 ```
 
+### Customization
+
+Query objects can optionally have a bit of customization with regard to display through the `::name` and `::desc` methods. Overriding the `::name` method will change the display on the right-hand side, and adding a `::desc` method will add a small paragraph with a description below the name.
+
+### Query DSL
+
+You can create queries manually as described above, or you can use a minimal DSL through the `Rack::Queries::create` method. To recreate the `UserPerOrgCountQuery` as above, you could:
+
+```ruby
+Rack::Queries.create do
+  name 'UserPerOrgCountQuery'
+  desc 'The count of users in each organization'
+
+  opt :org do
+    Org.order(:name).pluck(:name)
+  end
+
+  run do |opts|
+    Org.where(name: opts['org']).users.count
+  end
+end
+```
+
 ### Middleware
 
 Since `Rack::Queries` is a rack application, you can add whatever middleware you like into its stack before the request hits the application. For instance, to integrate HTTP basic auth around it to protect the query results, you can use the `Rack::Queries::App::use` method as in:

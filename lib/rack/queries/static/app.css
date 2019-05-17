@@ -38,7 +38,7 @@ nav {
   background-color: #fff;
   border-left: #aaa solid 1px;
   box-sizing: border-box;
-  flex-basis: 25%;
+  flex-basis: 33%;
   padding-top: calc(2.8rem + 5px);
 }
 
@@ -57,15 +57,30 @@ nav {
   position: relative;
   text-align: left;
   width: 100%;
-  word-break: break-all;
+}
+
+.query p {
+  color: #666;
+  font-size: .8em;
+  margin: .5em 0 0;
 }
 
 .query:hover {
   background-color: #eee;
 }
 
+.query:focus {
+  outline: 1px dotted #8b3333;
+  outline-offset: 1px;
+  z-index: 1
+}
+
 .query-active {
   background-color: #8b3333;
+  color: #fff;
+}
+
+.query-active p {
   color: #fff;
 }
 
@@ -94,7 +109,6 @@ nav {
 }
 
 .run {
-  border: 0;
   border-radius: 4px;
   background: #8b3333;
   color: #fff;
@@ -104,6 +118,12 @@ nav {
   font-size: inherit;
   line-height: inherit;
   padding: .5rem 1rem;
+  transition: background .5s;
+}
+
+.run:focus {
+  outline: 1px dotted #8b3333;
+  outline-offset: 1px;
 }
 
 .run:disabled {

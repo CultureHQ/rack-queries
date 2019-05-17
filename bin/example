@@ -68,6 +68,14 @@ end
 
 module Queries
   class OrgCountQuery
+    def self.name
+      'Organization count'
+    end
+
+    def self.desc
+      'The total count of organizations in the system'
+    end
+
     def run(_opts)
       Database.value_from('SELECT COUNT(*) FROM orgs')
     end
@@ -109,22 +117,24 @@ module Queries
       Database.value_from('SELECT COUNT(*) FROM users')
     end
   end
-
-  class UsersQuery
-    def run(_opts)
-      [%w[id org_id active name]] +
-        Database.rows_from('SELECT id, org_id, active, name FROM users')
-    end
-  end
 end
 
 Rack::Queries.add(
   Queries::OrgCountQuery,
   Queries::OrgUsersCountQuery,
   Queries::OrgActiveUsersCountQuery,
-  Queries::UserCountQuery,
-  Queries::UsersQuery
+  Queries::UserCountQuery
 )
+
+Rack::Queries.create do
+  name 'UsersQuery'
+  desc 'The list of all users'
+
+  run do |_opts|
+    [%w[id org_id active name]] +
+      Database.rows_from('SELECT id, org_id, active, name FROM users')
+  end
+end
 
 Rack::Server.start(app: Rack::Queries::App, server: 'webrick')
 
