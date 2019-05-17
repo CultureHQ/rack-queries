@@ -3,6 +3,32 @@
 module Rack
   module Queries
     class Cache
+      class CreateQuery
+        def self.name(name = :get)
+          if name == :get
+            @name
+          else
+            @name = name
+          end
+        end
+
+        def self.desc(desc = :get)
+          if desc == :get
+            @desc
+          else
+            @desc = desc
+          end
+        end
+
+        def self.opt(name, &block)
+          define_method(name, &block)
+        end
+
+        def self.run(&block)
+          define_method(:run, &block)
+        end
+      end
+
       attr_reader :cache
 
       def initialize
@@ -11,6 +37,11 @@ module Rack
 
       def add(*queries)
         @cache = (cache + queries).sort_by(&:name)
+      end
+
+      def create(&block)
+        query = Class.new(CreateQuery, &block)
+        @cache = (cache << query).sort_by(&:name)
       end
 
       def opts_for(name, opt)
@@ -23,8 +54,10 @@ module Rack
 
       def queries
         cache.map do |query|
+          desc = query.respond_to?(:desc) ? query.desc : ''
           opts = query.public_instance_methods(false) - %i[run]
-          { name: query.name, opts: opts }
+
+          { name: query.name, desc: desc, opts: opts }
         end
       end
 
@@ -38,7 +71,7 @@ module Rack
         end
 
         extend Forwardable
-        def_delegators :instance, :add, :opts_for, :queries, :query_for
+        def_delegators :instance, :add, :create, :opts_for, :queries, :query_for
       end
     end
   end

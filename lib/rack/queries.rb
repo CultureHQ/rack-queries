@@ -13,5 +13,9 @@ module Rack
     def self.add(*queries)
       Cache.add(*queries)
     end
+
+    def self.create(&block)
+      Cache.create(&block)
+    end
   end
 end

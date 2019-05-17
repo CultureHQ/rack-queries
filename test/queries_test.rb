@@ -51,24 +51,25 @@ module Queries
     ]
   }.freeze
 
-  class UserNamesQuery
-    def org_name
-      USERS.keys
-    end
-
-    def run(opts)
-      USERS[opts['org_name']]
-    end
-
-    Rack::Queries.add(self)
-  end
-
   class UserCountQuery
     def run(_opts)
       USERS.values.sum(&:size)
     end
 
     Rack::Queries.add(self)
+  end
+
+  Rack::Queries.create do
+    name 'UserNamesQuery'
+    desc 'The names of all the users in an organization'
+
+    opt :org_name do
+      USERS.keys
+    end
+
+    run do |opts|
+      USERS[opts['org_name']]
+    end
   end
 end
 
@@ -110,7 +111,7 @@ class QueriesTest < Minitest::Test
   end
 
   def test_query_opt
-    get '/queries/Queries::UserNamesQuery/opts/org_name'
+    get '/queries/UserNamesQuery/opts/org_name'
 
     assert last_response.ok?
     assert_equal 2, json['values'].size
@@ -125,7 +126,7 @@ class QueriesTest < Minitest::Test
 
   def test_query_with_params
     org_name = 'Dunder Mifflin'
-    get '/queries/Queries::UserNamesQuery', org_name: org_name
+    get '/queries/UserNamesQuery', org_name: org_name
 
     assert last_response.ok?
     assert_equal Queries::USERS[org_name], json['results']

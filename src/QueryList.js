@@ -10,6 +10,7 @@ const Query = ({ active, query, onQueryClick }) => {
   return (
     <button className={className} type="button" onClick={onClick}>
       {query.name}
+      {query.desc && <p>{query.desc}</p>}
     </button>
   );
 };

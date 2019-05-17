@@ -11,18 +11,18 @@ module Rack
         def call(env)
           return not_found unless env[REQUEST_METHOD]
 
-          case env[PATH_INFO]
-          when '/queries'
-            json(queries: Cache.queries)
-          when %r{\A/queries/([a-z0-9_\-:]+)\z}i
+          case Utils.unescape(env[PATH_INFO])
+          when %r{\A/queries/(.+)/opts/(.+)\z}i
+            values = Cache.opts_for($1, $2)
+            values ? json(values: values) : not_found
+          when %r{\A/queries/(.+)\z}i
             query = Cache.query_for($1)
             return not_found unless query
 
             params = Request.new(env).params
             json(results: query.new.run(params))
-          when %r{\A/queries/([a-z0-9_\-:]+)/opts/([a-z0-9_]+)\z}i
-            values = Cache.opts_for($1, $2)
-            values ? json(values: values) : not_found
+          when '/queries'
+            json(queries: Cache.queries)
           else
             not_found
           end
