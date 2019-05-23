@@ -66,73 +66,64 @@ class Database
   end
 end
 
-module Queries
-  class OrgCountQuery
-    def self.name
-      'Organization count'
+module Rack
+  module Queries
+    create do
+      name 'Organization count'
+      desc 'The total count of organizations'
+
+      run { |_opts| Database.value_from('SELECT COUNT(*) FROM orgs') }
     end
 
-    def self.desc
-      'The total count of organizations in the system'
+    create do
+      name 'User count'
+      desc 'The total count of users'
+
+      run { |_opts| Database.value_from('SELECT COUNT(*) FROM users') }
     end
 
-    def run(_opts)
-      Database.value_from('SELECT COUNT(*) FROM orgs')
-    end
-  end
+    create do
+      name 'Users'
+      desc 'The list of all users'
 
-  class OrgUsersCountQuery
-    def org_name
-      Database.values_from('SELECT name FROM orgs')
-    end
-
-    def run(opts)
-      query = <<~SQL
-        SELECT COUNT(*) FROM users
-        WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
-      SQL
-
-      Database.value_from(query, opts)
-    end
-  end
-
-  class OrgActiveUsersCountQuery
-    def org_name
-      Database.values_from('SELECT name FROM orgs')
+      run do |_opts|
+        [%w[id org_id active name]] +
+          Database.rows_from('SELECT id, org_id, active, name FROM users')
+      end
     end
 
-    def run(opts)
-      query = <<~SQL
-        SELECT COUNT(*) FROM users
-        WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
-        AND active = 1
-      SQL
+    create do
+      name 'Users in organizations count'
+      desc 'The total count of users in a given organization'
 
-      Database.value_from(query, opts)
+      opt(:org_name) { Database.values_from('SELECT name FROM orgs') }
+
+      run do |opts|
+        query = <<~SQL
+          SELECT COUNT(*) FROM users
+          WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
+        SQL
+
+        Database.value_from(query, opts)
+      end
     end
-  end
 
-  class UserCountQuery
-    def run(_opts)
-      Database.value_from('SELECT COUNT(*) FROM users')
+    create do
+      name 'Active users in organizations count'
+      desc 'The total count of active users in a given organization'
+
+      opt(:org_name) { Database.values_from('SELECT name FROM orgs') }
+
+      run do |opts|
+        query = <<~SQL
+          SELECT COUNT(*) FROM users
+          WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
+          AND active = 1
+        SQL
+
+        Database.value_from(query, opts)
+      end
     end
-  end
-end
-
-Rack::Queries.add(
-  Queries::OrgCountQuery,
-  Queries::OrgUsersCountQuery,
-  Queries::OrgActiveUsersCountQuery,
-  Queries::UserCountQuery
-)
-
-Rack::Queries.create do
-  name 'UsersQuery'
-  desc 'The list of all users'
-
-  run do |_opts|
-    [%w[id org_id active name]] +
-      Database.rows_from('SELECT id, org_id, active, name FROM users')
   end
 end
 
