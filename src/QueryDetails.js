@@ -72,7 +72,11 @@ const QueryDetails = ({ query }) => {
         Run
       </button>
       <div className="results">
-        <QueryResults {...runState} />
+        <QueryResults
+          error={runState.error}
+          fetching={runState.fetching}
+          results={runState.results}
+        />
       </div>
     </div>
   );
