@@ -28,9 +28,9 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@culturehq/scripts": "^0.2.1",
+    "@culturehq/scripts": "^1.0.0",
+    "@testing-library/react": "^8.0.1",
     "babel-loader": "^8.0.6",
-    "react-testing-library": "^7.0.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
   }

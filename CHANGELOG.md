@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- [INTERNAL] Switch to using `@testing-library/react` for tests.
+
 ## [0.2.0] - 2019-05-17
 
 ### Added

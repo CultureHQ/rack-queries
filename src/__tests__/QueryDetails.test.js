@@ -1,5 +1,5 @@
 import React from "react";
-import { act, fireEvent, render, waitForElement } from "react-testing-library";
+import { act, fireEvent, render, waitForElement } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryDetails from "../QueryDetails";
