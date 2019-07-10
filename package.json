@@ -26,7 +26,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.3",
+    "@babel/preset-env": "^7.5.4",
     "@babel/preset-react": "^7.0.0",
     "@culturehq/scripts": "^2.2.0",
     "@testing-library/react": "^8.0.4",
