@@ -32,6 +32,6 @@
     "@testing-library/react": "^8.0.5",
     "babel-loader": "^8.0.6",
     "webpack": "^4.35.3",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.6"
   }
 }
