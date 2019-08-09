@@ -17,20 +17,16 @@ test("renders the list of queries", async () => {
   let getByText;
   let queryByText;
 
-  act(() => {
-    ({ getByText, queryByText } = render(<QueryList />));
-  });
+  await act(
+    async () => {
+      ({ getByText, queryByText } = render(<QueryList />));
 
-  // This is going to issue warnings until
-  // https://github.com/babel/babel/issues/5085 is closed (which would allow
-  // as to await from within act)
-  await Promise.all(queries.map(query => (
-    waitForElement(() => getByText(query.name))
-  )));
+      await waitForElement(() => getByText(queries[0].name));
+      await waitForElement(() => getByText(queries[1].name));
+    }
+  );
 
-  act(() => {
-    fireEvent.click(getByText(queries[0].name));
-  });
+  act(() => void fireEvent.click(getByText(queries[0].name)));
 
   expect(queryByText("Run")).toBeTruthy();
 });
