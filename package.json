@@ -1,6 +1,6 @@
 {
   "name": "rack-queries",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The frontend component of the rack queries page",
   "main": "src/app.js",
   "scripts": {
