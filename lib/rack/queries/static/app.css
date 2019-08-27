@@ -75,16 +75,16 @@ nav {
   z-index: 1
 }
 
-.query-active {
+.query[aria-current='true'] {
   background-color: #8b3333;
   color: #fff;
 }
 
-.query-active p {
+.query[aria-current='true'] p {
   color: #fff;
 }
 
-.query-active:before {
+.query[aria-current='true']:before {
   border-bottom: 12px solid transparent;
   border-right: 12px solid #8b3333;
   border-top: 12px solid transparent;
@@ -93,7 +93,7 @@ nav {
   position: absolute;
 }
 
-.query-active:hover {
+.query[aria-current='true']:hover {
   background-color: #8b3333;
 }
 

@@ -1,20 +1,28 @@
-import React from "react";
+import * as React from "react";
 
-const QueryResults = ({ error, fetching, results }) => {
+import * as API from "./api";
+
+type QueryResultsProps = {
+  error: Error | null;
+  fetching: boolean;
+  results: API.QueryResult | null;
+};
+
+const QueryResults = ({ error, fetching, results }: QueryResultsProps) => {
   if (!error && !fetching && (results === null)) {
     return null;
   }
 
   if (error) {
-    return "error";
+    return <>error</>;
   }
 
   if (fetching) {
-    return "fetching";
+    return <>fetching</>;
   }
 
   if (!Array.isArray(results)) {
-    return `Result: ${results}`;
+    return <>Result: {results}</>;
   }
 
   const [headerRow, ...bodyRows] = results;
@@ -26,7 +34,7 @@ const QueryResults = ({ error, fetching, results }) => {
       <table>
         <thead>
           <tr>
-            {headerRow.map((value, index) => (
+            {headerRow.map((value, index: number) => (
               <th key={index}>
                 {value}
               </th>
@@ -34,9 +42,9 @@ const QueryResults = ({ error, fetching, results }) => {
           </tr>
         </thead>
         <tbody>
-          {bodyRows.map((bodyRow, rowIndex) => (
+          {bodyRows.map((bodyRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              {bodyRow.map((value, cellIndex) => (
+              {bodyRow.map((value, cellIndex: number) => (
                 <td key={cellIndex}>
                   {value}
                 </td>
