@@ -1,46 +1,40 @@
 import * as React from "react";
 
-import { Query } from "./QueryList";
-import QueryOpts from "./QueryOpts";
+import * as API from "./api";
+
+import QueryOpts, { QueryOptValues } from "./QueryOpts";
 import QueryResults from "./QueryResults";
 import doFetch from "./utils/doFetch";
 
-export type QueryValues = {
-  [key: string]: string
-};
-
-const makeQueryURL = (query: Query, values: QueryValues) => {
+const makeQueryURL = (query: API.Query, values: QueryOptValues) => {
   const url = `queries/${query.name}`;
+  const filtered = Object.keys(values).filter(key => values[key]);
 
-  if (Object.keys(values).length === 0) {
+  if (filtered.length === 0) {
     return url;
   }
 
-  const pairs = Object.keys(values).map(key => (
-    `${encodeURIComponent(key)}=${encodeURIComponent(values[key])}`
+  const pairs = filtered.map(key => (
+    `${encodeURIComponent(key)}=${encodeURIComponent(values[key] as string)}`
   ));
 
   return `${url}?${pairs.join("&")}`;
 };
 
-type QueryDetailsProps = {
-  query: Query;
-};
-
-type RunState = {
+type QueryRunState = {
   error: Error | null;
   fetching: boolean;
-  results: [] | string | null;
+  results: API.QueryResult | null;
 };
 
-const QueryDetails = ({ query }: { query: Query }) => {
+const QueryDetails = ({ query }: { query: API.Query }) => {
   const detailsRef = React.useRef<HTMLDivElement>(null);
 
-  const [values, setValues] = React.useState<QueryValues>(
+  const [values, setValues] = React.useState<QueryOptValues>(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
 
-  const [runState, setRunState] = React.useState<RunState>({
+  const [runState, setRunState] = React.useState<QueryRunState>({
     error: null, fetching: false, results: null
   });
 
@@ -52,13 +46,13 @@ const QueryDetails = ({ query }: { query: Query }) => {
   const onRun = () => {
     setRunState({ error: null, fetching: true, results: null });
 
-    doFetch(makeQueryURL(query, values))
-      .then(({ results }) => {
+    doFetch<API.QueryRunResponse>(makeQueryURL(query, values))
+      .then(({ results }: { results: API.QueryResult }) => {
         if (detailsRef.current) {
           setRunState({ error: null, fetching: false, results });
         }
       })
-      .catch(error => {
+      .catch((error: Error) => {
         if (detailsRef.current) {
           setRunState({ error, fetching: false, results: null });
         }

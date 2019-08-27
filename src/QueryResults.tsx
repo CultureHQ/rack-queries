@@ -1,20 +1,28 @@
 import * as React from "react";
 
-const QueryResults = ({ error, fetching, results }) => {
+import * as API from "./api";
+
+type QueryResultsProps = {
+  error: Error | null;
+  fetching: boolean;
+  results: API.QueryResult | null;
+};
+
+const QueryResults = ({ error, fetching, results }: QueryResultsProps) => {
   if (!error && !fetching && (results === null)) {
     return null;
   }
 
   if (error) {
-    return "error";
+    return <>error</>;
   }
 
   if (fetching) {
-    return "fetching";
+    return <>fetching</>;
   }
 
   if (!Array.isArray(results)) {
-    return `Result: ${results}`;
+    return <>Result: {results}</>;
   }
 
   const [headerRow, ...bodyRows] = results;

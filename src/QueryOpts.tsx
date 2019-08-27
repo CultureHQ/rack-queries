@@ -1,23 +1,28 @@
 import * as React from "react";
 
-import { Query } from "./QueryList";
-import { QueryValues } from "./QueryDetails";
+import * as API from "./api";
+
 import useFetch from "./utils/useFetch";
 
-type QueryOpt = {
-  query: Query;
-  onValueChange: (opt: string, value: string) => void;
+export type QueryOptValues = {
+  [key: string]: string | null;
 };
 
-type QueryOptProps = QueryOpt & {
+type ValueChangeCallback = (opt: string, value: string) => void;
+
+type QueryOptProps = {
+  query: API.Query;
   opt: string;
   value: string | null;
+  onValueChange: ValueChangeCallback;
 };
 
 const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
-  const { error, fetching, json } = useFetch(`queries/${query.name}/opts/${opt}`);
+  const { error, fetching, json } = useFetch<API.QueryOptsResponse>(`queries/${query.name}/opts/${opt}`);
 
-  const onChange = event => onValueChange(opt, event.target.value);
+  const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    onValueChange(opt, event.target.value);
+  };
 
   if (error) {
     return <>error</>;
@@ -27,8 +32,10 @@ const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
     return <>fetching</>;
   }
 
+  const { values } = json as API.QueryOptsResponse;
+
   if (!value) {
-    onValueChange(opt, json.values[0]);
+    onValueChange(opt, values[0]);
   }
 
   const name = `${query.name}-${opt}`;
@@ -37,7 +44,7 @@ const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
     <label className="opt" htmlFor={name}>
       {`${opt}: `}
       <select id={name} name={name} onChange={onChange}>
-        {json.values.map(optValue => (
+        {values.map((optValue: string) => (
           <option key={optValue} value={optValue}>{optValue}</option>
         ))}
       </select>
@@ -45,8 +52,10 @@ const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
   );
 };
 
-type QueryOptsProps = QueryOpt & {
-  values: QueryValues;
+type QueryOptsProps = {
+  query: API.Query;
+  values: QueryOptValues;
+  onValueChange: ValueChangeCallback;
 };
 
 const QueryOpts = ({ query, values, onValueChange }: QueryOptsProps) => (
