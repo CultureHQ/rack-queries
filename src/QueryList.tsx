@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import QueryDetails from "./QueryDetails";
 import useFetch from "./utils/useFetch";
@@ -17,7 +17,7 @@ const Query = ({ active, query, onQueryClick }) => {
 
 const QueryList = () => {
   const { error, fetching, json } = useFetch("queries");
-  const [activeQuery, setActiveQuery] = useState(null);
+  const [activeQuery, setActiveQuery] = React.useState(null);
 
   if (error) {
     return "error";

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 const QueryResults = ({ error, fetching, results }) => {
   if (!error && !fetching && (results === null)) {

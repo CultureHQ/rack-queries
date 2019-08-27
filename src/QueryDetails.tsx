@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import * as React from "react";
 
 import QueryOpts from "./QueryOpts";
 import QueryResults from "./QueryResults";
@@ -19,13 +19,13 @@ const makeQueryURL = (query, values) => {
 };
 
 const QueryDetails = ({ query }) => {
-  const detailsRef = useRef(null);
+  const detailsRef = React.useRef(null);
 
-  const [values, setValues] = useState(
+  const [values, setValues] = React.useState(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
 
-  const [runState, setRunState] = useState({
+  const [runState, setRunState] = React.useState({
     error: null, fetching: false, results: null
   });
 

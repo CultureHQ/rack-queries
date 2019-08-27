@@ -1,4 +1,5 @@
-import React from "react";
+import * as React from "react";
+
 import useFetch from "./utils/useFetch";
 
 const QueryOpt = ({ query, opt, value, onValueChange }) => {

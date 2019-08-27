@@ -1,13 +1,13 @@
-import React, { StrictMode } from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import QueryList from "./QueryList";
 
 const App = () => (
-  <StrictMode>
+  <React.StrictMode>
     <h1>Rack::Queries</h1>
     <QueryList />
-  </StrictMode>
+  </React.StrictMode>
 );
 
 ReactDOM.render(<App />, document.getElementById("main"));
