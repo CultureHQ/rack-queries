@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Switch the frontend over to TypeScript.
+
 ## [0.2.1] - 2019-08-09
 
 ### Changed
