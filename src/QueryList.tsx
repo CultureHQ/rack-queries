@@ -3,44 +3,59 @@ import * as React from "react";
 import QueryDetails from "./QueryDetails";
 import useFetch from "./utils/useFetch";
 
-const Query = ({ active, query, onQueryClick }) => {
+export type Query = {
+  name: string;
+  desc: string | null;
+  opts: string[];
+};
+
+type QueryListItemProps = {
+  current: boolean;
+  query: Query;
+  onQueryClick: (query: Query) => void;
+};
+
+const QueryListItem = ({ current, query, onQueryClick }: QueryListItemProps) => {
   const onClick = () => onQueryClick(query);
-  const className = active ? "query query-active" : "query";
 
   return (
-    <button className={className} type="button" onClick={onClick}>
+    <button className="query" aria-current={current} type="button" onClick={onClick}>
       {query.name}
       {query.desc && <p>{query.desc}</p>}
     </button>
   );
 };
 
+type QueryListResult = {
+  queries: Query[];
+};
+
 const QueryList = () => {
-  const { error, fetching, json } = useFetch("queries");
-  const [activeQuery, setActiveQuery] = React.useState(null);
+  const { error, fetching, json } = useFetch<QueryListResult>("queries");
+  const [currentQuery, setCurrentQuery] = React.useState<Query | null>(null);
 
   if (error) {
-    return "error";
+    return <>error</>;
   }
 
   if (fetching) {
-    return "fetching";
+    return <>fetching</>;
   }
 
   return (
     <main>
       <div className="active">
-        {activeQuery && (
-          <QueryDetails key={activeQuery.name} query={activeQuery} />
+        {currentQuery && (
+          <QueryDetails key={currentQuery.name} query={currentQuery} />
         )}
       </div>
       <nav>
-        {json.queries.map(query => (
-          <Query
+        {json.queries.map((query: Query) => (
+          <QueryListItem
             key={query.name}
-            active={query === activeQuery}
+            current={query === currentQuery}
             query={query}
-            onQueryClick={setActiveQuery}
+            onQueryClick={setCurrentQuery}
           />
         ))}
       </nav>

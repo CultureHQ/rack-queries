@@ -1,10 +1,15 @@
 import * as React from "react";
 
+import { Query } from "./QueryList";
 import QueryOpts from "./QueryOpts";
 import QueryResults from "./QueryResults";
 import doFetch from "./utils/doFetch";
 
-const makeQueryURL = (query, values) => {
+export type QueryValues = {
+  [key: string]: string
+};
+
+const makeQueryURL = (query: Query, values: QueryValues) => {
   const url = `queries/${query.name}`;
 
   if (Object.keys(values).length === 0) {
@@ -18,18 +23,28 @@ const makeQueryURL = (query, values) => {
   return `${url}?${pairs.join("&")}`;
 };
 
-const QueryDetails = ({ query }) => {
-  const detailsRef = React.useRef(null);
+type QueryDetailsProps = {
+  query: Query;
+};
 
-  const [values, setValues] = React.useState(
+type RunState = {
+  error: Error | null;
+  fetching: boolean;
+  results: [] | string | null;
+};
+
+const QueryDetails = ({ query }: { query: Query }) => {
+  const detailsRef = React.useRef<HTMLDivElement>(null);
+
+  const [values, setValues] = React.useState<QueryValues>(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
 
-  const [runState, setRunState] = React.useState({
+  const [runState, setRunState] = React.useState<RunState>({
     error: null, fetching: false, results: null
   });
 
-  const onValueChange = (opt, value) => {
+  const onValueChange = (opt: string, value: string) => {
     setValues(current => ({ ...current, [opt]: value }));
     setRunState({ error: null, fetching: false, results: null });
   };
@@ -40,12 +55,12 @@ const QueryDetails = ({ query }) => {
     doFetch(makeQueryURL(query, values))
       .then(({ results }) => {
         if (detailsRef.current) {
-          setRunState({ fetching: false, results });
+          setRunState({ error: null, fetching: false, results });
         }
       })
       .catch(error => {
         if (detailsRef.current) {
-          setRunState({ fetching: false, error });
+          setRunState({ error, fetching: false, results: null });
         }
       });
   };

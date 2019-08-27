@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
+
 import doFetch from "./doFetch";
 
-const useFetch = path => {
-  const [state, setState] = useState({
+type FetchState<T extends {}> = {
+  error: Error | null;
+  fetching: boolean;
+  json: T
+};
+
+const useFetch = <T extends {}>(path: string) => {
+  const [state, setState] = useState<FetchState<T>>({
     error: null,
     fetching: true,
     json: {}
@@ -12,9 +19,9 @@ const useFetch = path => {
     () => {
       setState({ error: null, fetching: true, json: {} });
 
-      doFetch(path)
+      doFetch<T>(path)
         .then(json => setState({ error: null, fetching: false, json }))
-        .catch(error => setState({ error, fetching: false, json: {} }));
+        .catch((error: Error) => setState({ error, fetching: false, json: {} }));
     },
     [path]
   );

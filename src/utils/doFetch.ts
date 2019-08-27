@@ -1,4 +1,4 @@
-const doFetch = path => new Promise((resolve, reject) => {
+const doFetch = <T extends {}>(path: string) => new Promise((resolve, reject) => {
   const xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = () => {
@@ -7,7 +7,7 @@ const doFetch = path => new Promise((resolve, reject) => {
     }
 
     if (xhr.status >= 200 && xhr.status < 300) {
-      resolve(JSON.parse(xhr.responseText));
+      resolve(JSON.parse(xhr.responseText) as T);
     } else {
       reject(new Error(xhr.responseText));
     }

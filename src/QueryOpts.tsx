@@ -1,18 +1,30 @@
 import * as React from "react";
 
+import { Query } from "./QueryList";
+import { QueryValues } from "./QueryDetails";
 import useFetch from "./utils/useFetch";
 
-const QueryOpt = ({ query, opt, value, onValueChange }) => {
+type QueryOpt = {
+  query: Query;
+  onValueChange: (opt: string, value: string) => void;
+};
+
+type QueryOptProps = QueryOpt & {
+  opt: string;
+  value: string | null;
+};
+
+const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
   const { error, fetching, json } = useFetch(`queries/${query.name}/opts/${opt}`);
 
   const onChange = event => onValueChange(opt, event.target.value);
 
   if (error) {
-    return "error";
+    return <>error</>;
   }
 
   if (fetching) {
-    return "fetching";
+    return <>fetching</>;
   }
 
   if (!value) {
@@ -33,7 +45,11 @@ const QueryOpt = ({ query, opt, value, onValueChange }) => {
   );
 };
 
-const QueryOpts = ({ query, values, onValueChange }) => (
+type QueryOptsProps = QueryOpt & {
+  values: QueryValues;
+};
+
+const QueryOpts = ({ query, values, onValueChange }: QueryOptsProps) => (
   <>
     {query.opts.map(opt => (
       <QueryOpt

@@ -26,7 +26,7 @@ const QueryResults = ({ error, fetching, results }) => {
       <table>
         <thead>
           <tr>
-            {headerRow.map((value, index) => (
+            {headerRow.map((value, index: number) => (
               <th key={index}>
                 {value}
               </th>
@@ -34,9 +34,9 @@ const QueryResults = ({ error, fetching, results }) => {
           </tr>
         </thead>
         <tbody>
-          {bodyRows.map((bodyRow, rowIndex) => (
+          {bodyRows.map((bodyRow, rowIndex: number) => (
             <tr key={rowIndex}>
-              {bodyRow.map((value, cellIndex) => (
+              {bodyRow.map((value, cellIndex: number) => (
                 <td key={cellIndex}>
                   {value}
                 </td>
