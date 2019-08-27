@@ -1,14 +1,14 @@
-import React from "react";
+import * as React from "react";
 import { act, fireEvent, render, waitForElement } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryDetails from "../QueryDetails";
 
 document.body.dataset.scriptName = "/queries";
-window.XMLHttpRequest = jest.fn();
+(window as any).XMLHttpRequest = jest.fn();
 
 test("renders the list of opts", async () => {
-  window.XMLHttpRequest.mockImplementation(() => makeXHRMock(path => {
+  (window as any).XMLHttpRequest.mockImplementation(() => makeXHRMock(path => {
     switch (path) {
       case "/queries/queries/FooQuery/opts/fooOpt":
         return { values: ["FooValue", "BarValue"] };
@@ -19,20 +19,19 @@ test("renders the list of opts", async () => {
     }
   }));
 
-  let getByText;
-  let container;
+  let getByText: (text: string) => HTMLElement;
+  let getByRole: (text: string) => HTMLElement;
 
   act(() => {
-    ({ getByText, container } = render(
-      <QueryDetails query={{ name: "FooQuery", opts: ["fooOpt"] }} />
+    ({ getByText, getByRole } = render(
+      <QueryDetails query={{ name: "FooQuery", desc: null, opts: ["fooOpt"] }} />
     ));
   });
 
-  // This is going to issue warnings until we can use async act
   await waitForElement(() => getByText("FooValue"));
 
   act(() => {
-    fireEvent.change(container.querySelector("select"), {
+    fireEvent.change(getByRole("listbox"), {
       target: { value: "BarValue" }
     });
   });

@@ -5,7 +5,7 @@ declare namespace API {
     opts: string[];
   };
 
-  type QueryResult = string | string[][];
+  type QueryResult = string | (string | number)[][];
 
   type QueryListResponse = {
     queries: Query[];
