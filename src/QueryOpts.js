@@ -1,13 +1,10 @@
-import React, { useCallback } from "react";
+import React from "react";
 import useFetch from "./utils/useFetch";
 
 const QueryOpt = ({ query, opt, value, onValueChange }) => {
   const { error, fetching, json } = useFetch(`queries/${query.name}/opts/${opt}`);
 
-  const onChange = useCallback(
-    event => onValueChange(opt, event.target.value),
-    [onValueChange, opt]
-  );
+  const onChange = event => onValueChange(opt, event.target.value);
 
   if (error) {
     return "error";
@@ -23,8 +20,6 @@ const QueryOpt = ({ query, opt, value, onValueChange }) => {
 
   const name = `${query.name}-${opt}`;
 
-  /* eslint-disable jsx-a11y/label-has-for */
-  // because of https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/477
   return (
     <label className="opt" htmlFor={name}>
       {`${opt}: `}

@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 
 import QueryDetails from "./QueryDetails";
 import useFetch from "./utils/useFetch";
 
 const Query = ({ active, query, onQueryClick }) => {
-  const onClick = useCallback(() => onQueryClick(query), [query, onQueryClick]);
+  const onClick = () => onQueryClick(query);
   const className = active ? "query query-active" : "query";
 
   return (

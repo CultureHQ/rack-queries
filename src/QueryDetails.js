@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import QueryOpts from "./QueryOpts";
 import QueryResults from "./QueryResults";
@@ -29,32 +29,26 @@ const QueryDetails = ({ query }) => {
     error: null, fetching: false, results: null
   });
 
-  const onValueChange = useCallback(
-    (opt, value) => {
-      setValues(current => ({ ...current, [opt]: value }));
-      setRunState({ error: null, fetching: false, results: null });
-    },
-    [setValues, setRunState]
-  );
+  const onValueChange = (opt, value) => {
+    setValues(current => ({ ...current, [opt]: value }));
+    setRunState({ error: null, fetching: false, results: null });
+  };
 
-  const onRun = useCallback(
-    () => {
-      setRunState({ error: null, fetching: true, results: null });
+  const onRun = () => {
+    setRunState({ error: null, fetching: true, results: null });
 
-      doFetch(makeQueryURL(query, values))
-        .then(({ results }) => {
-          if (detailsRef.current) {
-            setRunState({ fetching: false, results });
-          }
-        })
-        .catch(error => {
-          if (detailsRef.current) {
-            setRunState({ fetching: false, error });
-          }
-        });
-    },
-    [detailsRef, query, values, setRunState]
-  );
+    doFetch(makeQueryURL(query, values))
+      .then(({ results }) => {
+        if (detailsRef.current) {
+          setRunState({ fetching: false, results });
+        }
+      })
+      .catch(error => {
+        if (detailsRef.current) {
+          setRunState({ fetching: false, error });
+        }
+      });
+  };
 
   return (
     <div ref={detailsRef}>
