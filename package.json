@@ -38,7 +38,7 @@
     "@types/react-dom": "^16.9.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
-    "typescript": "^3.6.2",
+    "typescript": "^3.6.3",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"
   },
