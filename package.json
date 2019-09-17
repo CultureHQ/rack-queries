@@ -40,7 +40,7 @@
     "babel-loader": "^8.0.6",
     "typescript": "^3.6.3",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.8"
+    "webpack-cli": "^3.3.9"
   },
   "resolutions": {
     "@types/react": "^16.9.2",
