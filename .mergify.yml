@@ -1,0 +1,14 @@
+pull_request_rules:
+  - name: Automatically merge dependencies
+    conditions:
+      - base=master
+      - label=dependencies
+      - status-success=Ruby Test
+      - status-success=Ruby Lint
+      - status-success=Ruby Audit
+      - status-success=JavaScript Test
+      - status-success=JavaScript Lint
+    actions:
+      merge:
+        strict: true
+      delete_head_branch: {}
