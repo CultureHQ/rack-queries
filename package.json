@@ -30,7 +30,7 @@
     "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.6.0",
-    "@babel/register": "^7.6.0",
+    "@babel/register": "^7.6.2",
     "@culturehq/scripts": "^4.1.1",
     "@testing-library/react": "^9.1.4",
     "@types/jest": "^24.0.18",
