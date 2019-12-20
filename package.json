@@ -34,7 +34,7 @@
     "@culturehq/scripts": "^5.1.1",
     "@testing-library/react": "^9.4.0",
     "@types/jest": "^24.0.23",
-    "@types/react": "^16.9.16",
+    "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
