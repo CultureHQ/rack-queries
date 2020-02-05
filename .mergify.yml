@@ -3,11 +3,8 @@ pull_request_rules:
     conditions:
       - base=master
       - label=dependencies
-      - status-success=Ruby Test
-      - status-success=Ruby Lint
-      - status-success=Ruby Audit
-      - status-success=JavaScript Test
-      - status-success=JavaScript Lint
+      - status-success=CI Ruby
+      - status-success=CI TypeScript
     actions:
       merge:
         strict: true
