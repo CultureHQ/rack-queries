@@ -1,6 +1,6 @@
 # Rack::Queries
 
-[![Build Status](https://github.com/CultureHQ/rack-queries/workflows/Push/badge.svg)](https://github.com/CultureHQ/rack-queries/actions)
+[![Build Status](https://github.com/CultureHQ/rack-queries/workflows/Main/badge.svg)](https://github.com/CultureHQ/rack-queries/actions)
 [![Gem Version](https://img.shields.io/gem/v/rack-queries.svg)](https://github.com/CultureHQ/rack-queries)
 
 This gem provides a page in your rack-based (e.g., `Rails`, `Sinatra`) application that allows quick execution of pre-built queries. The goal is to allow quick insights into the state of your application without needing to update the main UI. Consider it a backdoor admin page that you can use before you decide to truly expose query results.
