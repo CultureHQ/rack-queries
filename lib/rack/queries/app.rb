@@ -7,7 +7,8 @@ module Rack
         # Thought about refactoring this to split it out into multiple objects,
         # but then thought better of it. If we end up adding more API endpoints
         # then we can do something smart about it, but for now it's fine.
-        # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength
+        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/MethodLength
         def call(env)
           return not_found unless env[REQUEST_METHOD]
 
@@ -27,7 +28,8 @@ module Rack
             not_found
           end
         end
-        # rubocop:enable AbcSize, CyclomaticComplexity, MethodLength
+        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+        # rubocop:enable Metrics/MethodLength
 
         private
 
