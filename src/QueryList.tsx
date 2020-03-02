@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import API from "./api";
 
@@ -24,7 +24,7 @@ const QueryListItem: React.FC<QueryListItemProps> = ({ current, query, onQueryCl
 
 const QueryList: React.FC = () => {
   const get = useGet<API.QueryListResponse>("queries");
-  const [currentQuery, setCurrentQuery] = React.useState<API.Query | null>(null);
+  const [currentQuery, setCurrentQuery] = useState<API.Query | null>(null);
 
   if (get.error) {
     return <>error</>;

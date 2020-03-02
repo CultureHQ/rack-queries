@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
 import API from "./api";
 
@@ -32,13 +32,13 @@ type QueryDetailsProps = {
 };
 
 const QueryDetails: React.FC<QueryDetailsProps> = ({ query }) => {
-  const detailsRef = React.useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
 
-  const [values, setValues] = React.useState<QueryOptValues>(
+  const [values, setValues] = useState<QueryOptValues>(
     query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
   );
 
-  const [runState, setRunState] = React.useState<QueryRunState>({
+  const [runState, setRunState] = useState<QueryRunState>({
     error: null, fetching: false, results: null
   });
 
