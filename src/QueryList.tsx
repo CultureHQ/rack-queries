@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
 import API from "./api";
-
 import QueryDetails from "./QueryDetails";
-import useGet from "./utils/useGet";
+import useGet from "./useGet";
 
 type QueryListItemProps = {
   current: boolean;

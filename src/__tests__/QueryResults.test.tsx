@@ -1,50 +1,32 @@
 import * as React from "react";
-import { render } from "@testing-library/react";
+import { act, render, waitForElement } from "@testing-library/react";
 
+import makeXHRMock from "./makeXHRMock";
 import QueryResults from "../QueryResults";
 
-test("renders nothing if nothing is yet triggered", () => {
-  const { container } = render(
-    <QueryResults error={null} fetching={false} results={null} />
-  );
+document.body.dataset.scriptName = "/queries";
+(window as any).XMLHttpRequest = jest.fn();
 
-  expect(container.querySelector("*")).toBe(null);
-});
+test("renders the list of opts", async () => {
+  (window as any).XMLHttpRequest.mockImplementation(() => makeXHRMock(path => {
+    switch (path) {
+      case "/queries/queries/FooQuery?fooOpt=FooValue":
+        return { results: 5 };
+      default:
+        return null;
+    }
+  }));
 
-test("renders an error if there's an error", () => {
-  const { queryByText } = render(
-    <QueryResults error={new Error("foobar")} fetching={false} results={null} />
-  );
+  let getByText: (text: string) => HTMLElement;
 
-  expect(queryByText("error")).toBeTruthy();
-});
+  act(() => {
+    ({ getByText } = render(
+      <QueryResults
+        query={{ name: "FooQuery", desc: null, opts: ["fooOpt"] }}
+        values={{ fooOpt: "FooValue" }}
+      />
+    ));
+  });
 
-test("renders a placeholder if it's fetching", () => {
-  const { queryByText } = render(
-    <QueryResults error={null} fetching results={null} />
-  );
-
-  expect(queryByText("fetching")).toBeTruthy();
-});
-
-test("renders the results if it's just an object", () => {
-  const { queryByText } = render(
-    <QueryResults error={null} fetching={false} results="5" />
-  );
-
-  expect(queryByText("Result: 5")).toBeTruthy();
-});
-
-test("renders a table if it's an array of arrays", () => {
-  const results = [
-    ["a", "b", "c"],
-    [1, 2, 3],
-    [4, 5, 6]
-  ];
-
-  const { container } = render(
-    <QueryResults error={null} fetching={false} results={results} />
-  );
-
-  expect(container.querySelectorAll("td")).toHaveLength(6);
+  await waitForElement(() => getByText("Result: 5"));
 });

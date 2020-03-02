@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import API from "./api";
-
-import useGet from "./utils/useGet";
+import useGet from "./useGet";
 
 export type QueryOptValues = {
   [key: string]: string | null;
@@ -24,16 +23,21 @@ const QueryOpt: React.FC<QueryOptProps> = ({ query, opt, value, onValueChange })
     onValueChange(opt, event.target.value);
   };
 
+  useEffect(
+    () => {
+      if (!value && get.got) {
+        onValueChange(opt, get.got.values[0]);
+      }
+    },
+    [get, opt, value, onValueChange]
+  );
+
   if (get.error) {
     return <>error</>;
   }
 
   if (get.getting) {
     return <>getting</>;
-  }
-
-  if (!value) {
-    onValueChange(opt, get.got.values[0]);
   }
 
   const name = `${query.name}-${opt}`;
