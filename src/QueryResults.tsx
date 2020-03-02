@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 
-import * as API from "./api";
+import API from "./api";
 
 type QueryResultsProps = {
   error: Error | null;
@@ -8,7 +8,7 @@ type QueryResultsProps = {
   results: API.QueryResult | null;
 };
 
-const QueryResults = ({ error, fetching, results }: QueryResultsProps) => {
+const QueryResults: React.FC<QueryResultsProps> = ({ error, fetching, results }) => {
   if (!error && !fetching && (results === null)) {
     return null;
   }

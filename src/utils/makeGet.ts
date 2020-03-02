@@ -1,4 +1,4 @@
-const doFetch = <T extends ReturnType<typeof JSON.parse>>(path: string): Promise<T> => (
+const makeGet = <T extends ReturnType<typeof JSON.parse>>(path: string): Promise<T> => (
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -19,4 +19,4 @@ const doFetch = <T extends ReturnType<typeof JSON.parse>>(path: string): Promise
   })
 );
 
-export default doFetch;
+export default makeGet;

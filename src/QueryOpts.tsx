@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 
-import * as API from "./api";
+import API from "./api";
 
-import useFetch from "./utils/useFetch";
+import useGet from "./utils/useGet";
 
 export type QueryOptValues = {
   [key: string]: string | null;
@@ -17,25 +17,23 @@ type QueryOptProps = {
   onValueChange: ValueChangeCallback;
 };
 
-const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
-  const { error, fetching, json } = useFetch<API.QueryOptsResponse>(`queries/${query.name}/opts/${opt}`);
+const QueryOpt: React.FC<QueryOptProps> = ({ query, opt, value, onValueChange }) => {
+  const get = useGet<API.QueryOptsResponse>(`queries/${query.name}/opts/${opt}`);
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onValueChange(opt, event.target.value);
   };
 
-  if (error) {
+  if (get.error) {
     return <>error</>;
   }
 
-  if (fetching) {
-    return <>fetching</>;
+  if (get.getting) {
+    return <>getting</>;
   }
 
-  const { values } = json as API.QueryOptsResponse;
-
   if (!value) {
-    onValueChange(opt, values[0]);
+    onValueChange(opt, get.got.values[0]);
   }
 
   const name = `${query.name}-${opt}`;
@@ -44,7 +42,7 @@ const QueryOpt = ({ query, opt, value, onValueChange }: QueryOptProps) => {
     <label className="opt" htmlFor={name}>
       {`${opt}: `}
       <select id={name} name={name} onChange={onChange}>
-        {values.map((optValue: string) => (
+        {get.got.values.map(optValue => (
           <option key={optValue} value={optValue}>{optValue}</option>
         ))}
       </select>
@@ -58,7 +56,7 @@ type QueryOptsProps = {
   onValueChange: ValueChangeCallback;
 };
 
-const QueryOpts = ({ query, values, onValueChange }: QueryOptsProps) => (
+const QueryOpts: React.FC<QueryOptsProps> = ({ query, values, onValueChange }) => (
   <>
     {query.opts.map(opt => (
       <QueryOpt

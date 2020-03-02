@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 
-import * as API from "./api";
+import API from "./api";
 
 import QueryOpts, { QueryOptValues } from "./QueryOpts";
 import QueryResults from "./QueryResults";
-import doFetch from "./utils/doFetch";
+import makeGet from "./utils/makeGet";
 
 const makeQueryURL = (query: API.Query, values: QueryOptValues) => {
   const url = `queries/${query.name}`;
@@ -27,7 +27,11 @@ type QueryRunState = {
   results: API.QueryResult | null;
 };
 
-const QueryDetails = ({ query }: { query: API.Query }) => {
+type QueryDetailsProps = {
+  query: API.Query;
+};
+
+const QueryDetails: React.FC<QueryDetailsProps> = ({ query }) => {
   const detailsRef = React.useRef<HTMLDivElement>(null);
 
   const [values, setValues] = React.useState<QueryOptValues>(
@@ -46,13 +50,13 @@ const QueryDetails = ({ query }: { query: API.Query }) => {
   const onRun = () => {
     setRunState({ error: null, fetching: true, results: null });
 
-    doFetch<API.QueryRunResponse>(makeQueryURL(query, values))
-      .then(({ results }: { results: API.QueryResult }) => {
+    makeGet<API.QueryRunResponse>(makeQueryURL(query, values))
+      .then(({ results }) => {
         if (detailsRef.current) {
           setRunState({ error: null, fetching: false, results });
         }
       })
-      .catch((error: Error) => {
+      .catch(error => {
         if (detailsRef.current) {
           setRunState({ error, fetching: false, results: null });
         }

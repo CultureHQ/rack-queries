@@ -1,9 +1,9 @@
-import * as React from "react";
+import React from "react";
 
-import * as API from "./api";
+import API from "./api";
 
 import QueryDetails from "./QueryDetails";
-import useFetch from "./utils/useFetch";
+import useGet from "./utils/useGet";
 
 type QueryListItemProps = {
   current: boolean;
@@ -11,7 +11,7 @@ type QueryListItemProps = {
   onQueryClick: (query: API.Query) => void;
 };
 
-const QueryListItem = ({ current, query, onQueryClick }: QueryListItemProps) => {
+const QueryListItem: React.FC<QueryListItemProps> = ({ current, query, onQueryClick }) => {
   const onClick = () => onQueryClick(query);
 
   return (
@@ -22,19 +22,17 @@ const QueryListItem = ({ current, query, onQueryClick }: QueryListItemProps) => 
   );
 };
 
-const QueryList = () => {
-  const { error, fetching, json } = useFetch<API.QueryListResponse>("queries");
+const QueryList: React.FC = () => {
+  const get = useGet<API.QueryListResponse>("queries");
   const [currentQuery, setCurrentQuery] = React.useState<API.Query | null>(null);
 
-  if (error) {
+  if (get.error) {
     return <>error</>;
   }
 
-  if (fetching) {
-    return <>fetching</>;
+  if (get.getting) {
+    return <>getting</>;
   }
-
-  const { queries } = json as API.QueryListResponse;
 
   return (
     <main>
@@ -44,7 +42,7 @@ const QueryList = () => {
         )}
       </div>
       <nav>
-        {queries.map((query: API.Query) => (
+        {get.got.queries.map(query => (
           <QueryListItem
             key={query.name}
             current={query === currentQuery}
