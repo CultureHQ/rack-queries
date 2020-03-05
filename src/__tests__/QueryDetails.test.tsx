@@ -31,7 +31,7 @@ test("renders the list of opts", async () => {
   await waitForElement(() => getByText("FooValue"));
 
   act(() => {
-    fireEvent.change(getByRole("listbox"), {
+    fireEvent.change(getByRole("combobox"), {
       target: { value: "BarValue" }
     });
   });
