@@ -1,5 +1,5 @@
 import * as React from "react";
-import { act, fireEvent, render, waitForElement } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryList from "../QueryList";
@@ -21,8 +21,7 @@ test("renders the list of queries", async () => {
     async () => {
       ({ getByText, queryByText } = render(<QueryList />));
 
-      await waitForElement(() => getByText(queries[0].name));
-      await waitForElement(() => getByText(queries[1].name));
+      await waitFor(() => queries.map(query => getByText(query.name)));
     }
   );
 

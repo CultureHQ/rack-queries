@@ -1,5 +1,5 @@
 import * as React from "react";
-import { act, render, waitForElement } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryResults from "../QueryResults";
@@ -28,5 +28,5 @@ test("renders the list of opts", async () => {
     ));
   });
 
-  await waitForElement(() => getByText("Result: 5"));
+  await waitFor(() => getByText("Result: 5"));
 });

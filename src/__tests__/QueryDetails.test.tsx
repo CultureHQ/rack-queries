@@ -1,5 +1,5 @@
 import * as React from "react";
-import { act, fireEvent, render, waitForElement } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryDetails from "../QueryDetails";
@@ -28,7 +28,7 @@ test("renders the list of opts", async () => {
     ));
   });
 
-  await waitForElement(() => getByText("FooValue"));
+  await waitFor(() => getByText("FooValue"));
 
   act(() => {
     fireEvent.change(getByRole("combobox"), {
@@ -38,5 +38,5 @@ test("renders the list of opts", async () => {
 
   act(() => void fireEvent.click(getByText("Run")));
 
-  await waitForElement(() => getByText("Result: 5"));
+  await waitFor(() => getByText("Result: 5"));
 });
