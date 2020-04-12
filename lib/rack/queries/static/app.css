@@ -108,6 +108,11 @@ nav {
   vertical-align: middle;
 }
 
+.opt textarea {
+  height: 20em;
+  width: 50em;
+}
+
 .run {
   border-radius: 4px;
   background: #8b3333;

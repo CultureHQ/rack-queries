@@ -7,26 +7,27 @@ export type QueryOptValues = {
   [key: string]: string | null;
 };
 
-type ValueChangeCallback = (opt: string, value: string) => void;
+type ValueChangeCallback = (optName: string, value: string) => void;
 
 type QueryOptProps = {
+  name: string;
   query: API.Query;
-  opt: string;
+  opt: API.QueryOpt;
   value: string | null;
   onValueChange: ValueChangeCallback;
 };
 
-const QueryOpt: React.FC<QueryOptProps> = ({ query, opt, value, onValueChange }) => {
-  const get = useGet<API.QueryOptsResponse>(`queries/${query.name}/opts/${opt}`);
+const QueryOptSelect: React.FC<QueryOptProps> = ({ name, query, opt, value, onValueChange }) => {
+  const get = useGet<API.QueryOptsResponse>(`queries/${query.name}/opts/${opt.name}`);
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    onValueChange(opt, event.target.value);
+    onValueChange(opt.name, event.target.value);
   };
 
   useEffect(
     () => {
       if (!value && get.got) {
-        onValueChange(opt, get.got.values[0]);
+        onValueChange(opt.name, get.got.values[0]);
       }
     },
     [get, opt, value, onValueChange]
@@ -40,11 +41,9 @@ const QueryOpt: React.FC<QueryOptProps> = ({ query, opt, value, onValueChange })
     return <>getting</>;
   }
 
-  const name = `${query.name}-${opt}`;
-
   return (
     <label className="opt" htmlFor={name}>
-      {`${opt}: `}
+      {`${opt.name}: `}
       <select id={name} name={name} onChange={onChange}>
         {get.got.values.map(optValue => (
           <option key={optValue} value={optValue}>{optValue}</option>
@@ -52,6 +51,45 @@ const QueryOpt: React.FC<QueryOptProps> = ({ query, opt, value, onValueChange })
       </select>
     </label>
   );
+};
+
+const QueryOptString: React.FC<QueryOptProps> = ({ name, opt, value, onValueChange }) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onValueChange(opt.name, event.target.value);
+  };
+
+  return (
+    <label className="opt" htmlFor={name}>
+      {`${opt.name}: `}
+      <input type="text" id={name} name={name} onChange={onChange} value={value || ""} />
+    </label>
+  );
+};
+
+const QueryOptText: React.FC<QueryOptProps> = ({ name, opt, value, onValueChange }) => {
+  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onValueChange(opt.name, event.target.value);
+  };
+
+  return (
+    <label className="opt" htmlFor={name}>
+      {`${opt.name}: `}
+      <textarea id={name} name={name} onChange={onChange} value={value || ""} />
+    </label>
+  );
+};
+
+const QueryOpt: React.FC<QueryOptProps> = ({ opt, ...props }) => {
+  switch (opt.type) {
+    case "select":
+      return <QueryOptSelect opt={opt} {...props} />;
+    case "string":
+      return <QueryOptString opt={opt} {...props} />;
+    case "text":
+      return <QueryOptText opt={opt} {...props} />;
+    default:
+      return null;
+  }
 };
 
 type QueryOptsProps = {
@@ -64,10 +102,11 @@ const QueryOpts: React.FC<QueryOptsProps> = ({ query, values, onValueChange }) =
   <>
     {query.opts.map(opt => (
       <QueryOpt
-        key={opt}
+        key={opt.name}
+        name={`${query.name}-${opt.name}`}
         query={query}
         opt={opt}
-        value={values[opt]}
+        value={values[opt.name]}
         onValueChange={onValueChange}
       />
     ))}

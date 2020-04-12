@@ -13,12 +13,12 @@ const QueryDetails: React.FC<QueryDetailsProps> = ({ query }) => {
   const onRun = () => setRunning(true);
 
   const [values, setValues] = useState<QueryOptValues>(
-    query.opts.reduce((acc, opt) => ({ ...acc, [opt]: null }), {})
+    query.opts.reduce((acc, opt) => ({ ...acc, [opt.name]: null }), {})
   );
 
-  const onValueChange = (opt: string, value: string) => {
+  const onValueChange = (optName: string, value: string) => {
     setRunning(false);
-    setValues(current => ({ ...current, [opt]: value }));
+    setValues(current => ({ ...current, [optName]: value }));
   };
 
   return (

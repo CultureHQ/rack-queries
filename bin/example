@@ -44,7 +44,7 @@ class Database
   end
 
   def rows_from(query, binds = [])
-    execute(query, binds)
+    execute(query, binds).to_a
   end
 
   class << self
@@ -122,6 +122,24 @@ module Rack
         SQL
 
         Database.value_from(query, opts)
+      end
+    end
+
+    create do
+      name 'Name search'
+      desc 'Search for a user by name'
+
+      opt(:org_name) { Database.values_from('SELECT name FROM orgs') }
+      opt(:user_name, type: :text)
+
+      run do |opts|
+        query = <<~SQL
+          SELECT id, org_id, active, name FROM users
+          WHERE org_id = (SELECT id FROM orgs WHERE name = :org_name)
+            AND name LIKE :user_name || '%'
+        SQL
+
+        [%w[id org_id active name]] + Database.rows_from(query, opts)
       end
     end
   end

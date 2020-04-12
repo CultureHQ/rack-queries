@@ -1,5 +1,5 @@
-import * as React from "react";
-import { act, render, waitFor } from "@testing-library/react";
+import React from "react";
+import { render, waitFor } from "@testing-library/react";
 
 import makeXHRMock from "./makeXHRMock";
 import QueryResults from "../QueryResults";
@@ -17,16 +17,12 @@ test("renders the list of opts", async () => {
     }
   }));
 
-  let getByText: (text: string) => HTMLElement;
-
-  act(() => {
-    ({ getByText } = render(
-      <QueryResults
-        query={{ name: "FooQuery", desc: null, opts: ["fooOpt"] }}
-        values={{ fooOpt: "FooValue" }}
-      />
-    ));
-  });
+  const { getByText } = render(
+    <QueryResults
+      query={{ name: "FooQuery", desc: null, opts: [{ name: "fooOpt", type: "select" }] }}
+      values={{ fooOpt: "FooValue" }}
+    />
+  );
 
   await waitFor(() => getByText("Result: 5"));
 });
