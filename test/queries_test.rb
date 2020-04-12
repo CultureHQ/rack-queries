@@ -59,6 +59,18 @@ module Queries
     Rack::Queries.add(self)
   end
 
+  class UsersWhoseNameStartWithAQuery
+    def org_name
+      USERS.keys
+    end
+
+    def run(opts)
+      USERS[opts['org_name']].count { |user| user.start_with?('A') }
+    end
+
+    Rack::Queries.add(self)
+  end
+
   Rack::Queries.create do
     name 'UserNamesQuery'
     desc 'The names of all the users in an organization'
@@ -69,6 +81,26 @@ module Queries
 
     run do |opts|
       USERS[opts['org_name']]
+    end
+  end
+
+  Rack::Queries.create do
+    name 'UserSearchQuery'
+    desc 'Search for a user by name'
+
+    opt :org_name do
+      USERS.keys
+    end
+
+    opt :user_name, type: :string
+
+    run do |opts|
+      matched =
+        USERS[opts['org_name']].select do |user|
+          user.start_with?(opts['user_name'])
+        end
+
+      [%w[Name]] + matched.map { |user| [user] }
     end
   end
 end
@@ -107,7 +139,7 @@ class QueriesTest < Minitest::Test
     get '/queries'
 
     assert last_response.ok?
-    assert_equal 2, json['queries'].size
+    assert_equal 4, json['queries'].size
   end
 
   def test_query_opt
@@ -155,6 +187,35 @@ class QueriesTest < Minitest::Test
     get path
 
     assert_equal path, Middleware::Logger.instance.lines.last
+  end
+
+  def test_fail_to_create_due_to_wrong_type
+    assert_raises ArgumentError do
+      Rack::Queries.create do
+        opt(:foo, type: :string) {}
+      end
+    end
+  end
+
+  def test_allows_sending_values_for_other_option_types
+    org_name = 'Parks and Recreation'
+    user_name = 'A'
+
+    get '/queries/UserSearchQuery', org_name: org_name, user_name: user_name
+
+    assert last_response.ok?
+
+    expected = ['April Ludgate', 'Andy Dwyer']
+    assert_empty expected - json['results'][1..-1].flatten
+  end
+
+  def test_maps_public_instance_methods_onto_options
+    org_name = 'Parks and Recreation'
+
+    get '/queries/Queries::UsersWhoseNameStartWithAQuery', org_name: org_name
+
+    assert last_response.ok?
+    assert_equal 2, json['results'].to_i
   end
 
   private

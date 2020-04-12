@@ -1,8 +1,13 @@
 declare namespace API {
+  type QueryOpt = {
+    name: string;
+    type: "string" | "select" | "text";
+  };
+
   type Query = {
     name: string;
     desc: string | null;
-    opts: string[];
+    opts: QueryOpt[];
   };
 
   type QueryResult = string | (string | number)[][];

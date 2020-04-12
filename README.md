@@ -79,6 +79,27 @@ Rack::Queries.create do
 end
 ```
 
+With the DSL, you can additionally provide a `type` for your options that allows them to be specified on the client side. By default, the type is `select`, which will perform a query to the server to get the list of options. However, if you specify one of the other types (`string` or `text`), it will instead allow the user to provide input. For example, to allow a text area field, you would:
+
+```ruby
+Rack::Queries.create do
+  name 'Some CSV parsing'
+  desc 'Parse some CSV input!'
+
+  opt :csv, type: :text
+
+  run do |opts|
+    require 'csv'
+
+    CSV.foreach(opts['csv']) do
+      ...
+    end
+
+    ...
+  end
+end
+```
+
 ### Middleware
 
 Since `Rack::Queries` is a rack application, you can add whatever middleware you like into its stack before the request hits the application. For instance, to integrate HTTP basic auth around it to protect the query results, you can use the `Rack::Queries::App::use` method as in:

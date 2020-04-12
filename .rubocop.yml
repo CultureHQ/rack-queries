@@ -12,7 +12,16 @@ Style/Documentation:
 Style/PerlBackrefs:
   Enabled: false
 
+Style/StructInheritance:
+  Enabled: false
+
 ##############################
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Style/HashEachMethods:
   Enabled: true
