@@ -1,6 +1,6 @@
 {
   "name": "rack-queries",
-  "version": "0.2.1",
+  "private": true,
   "description": "The frontend component of the rack queries page",
   "main": "lib/rack/queries/static/app.js",
   "scripts": {
