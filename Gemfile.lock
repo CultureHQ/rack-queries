@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-queries (0.2.1)
+    rack-queries (0.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -55,4 +55,4 @@ DEPENDENCIES
   sqlite3 (~> 1.4)
 
 BUNDLED WITH
-   2.1.2
+   2.1.4
