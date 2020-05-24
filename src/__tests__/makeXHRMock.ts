@@ -8,7 +8,7 @@ type XHR = {
   status: number;
 };
 
-const makeXHRMock = (makeResponse: ((path: string) => object | null)) => {
+const makeXHRMock = (makeResponse: ((path: string) => Record<string, unknown> | null)): XHR => {
   const xhr: XHR = {
     onreadystatechange: null,
     open: (method: string, path: string) => {

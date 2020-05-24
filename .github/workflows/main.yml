@@ -4,9 +4,12 @@ jobs:
   ci-ruby:
     name: CI Ruby
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
-    - run: sudo apt-get update
-    - run: sudo apt-get install libsqlite3-dev
+    - run: |
+        sudo apt-get update
+        sudo apt-get install libsqlite3-dev
     - uses: actions/checkout@master
     - uses: ruby/setup-ruby@v1
       with:
@@ -17,21 +20,22 @@ jobs:
         key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-
-    - run: bundle config path vendor/bundle
-    - run: bundle install --jobs 4 --retry 3
-    - run: bundle exec bundle audit --update
-    - run: bundle exec rubocop --parallel
-    - run: bundle exec rake test
-      env:
-        CI: true
+    - run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+        bundle exec bundle audit --update
+        bundle exec rubocop --parallel
+        bundle exec rake test
   ci-ts:
     name: CI TypeScript
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
     - uses: actions/checkout@master
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v2-beta
       with:
-        node-version: 11.x
+        node-version: 14.x
     - id: yarn-cache
       run: echo "::set-output name=directory::$(yarn cache dir)"
     - uses: actions/cache@v1
@@ -40,8 +44,8 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - run: yarn install --frozen-lockfile
-    - run: yarn lint
-    - run: yarn test
-      env:
-        CI: true
+    - run: |
+        yarn install --frozen-lockfile
+        yarn lint
+        yarn compile
+        yarn test

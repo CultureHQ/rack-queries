@@ -1,10 +1,13 @@
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
   Exclude:
   - 'node_modules/**/*'
   - 'vendor/**/*'
+
+Layout/LineLength:
+  Max: 80
 
 Style/Documentation:
   Enabled: false
@@ -14,20 +17,3 @@ Style/PerlBackrefs:
 
 Style/StructInheritance:
   Enabled: false
-
-##############################
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
