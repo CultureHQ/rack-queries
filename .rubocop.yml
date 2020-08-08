@@ -6,6 +6,9 @@ AllCops:
   - 'node_modules/**/*'
   - 'vendor/**/*'
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
 Layout/LineLength:
   Max: 80
 
