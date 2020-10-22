@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/CultureHQ/rack-queries#readme",
   "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
