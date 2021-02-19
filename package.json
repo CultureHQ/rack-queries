@@ -25,7 +25,7 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.16",
+    "@babel/cli": "^7.12.17",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.17",
     "@babel/preset-react": "^7.12.10",
