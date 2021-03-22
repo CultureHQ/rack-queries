@@ -39,7 +39,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.2.2",
     "typescript": "^3.9.9",
-    "webpack": "^5.26.3",
+    "webpack": "^5.27.1",
     "webpack-cli": "^4.5.0"
   },
   "resolutions": {
